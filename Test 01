@@ -1,0 +1,33 @@
+index.html
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Hermes Exchange — история размещений</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; padding: 16px; line-height: 1.5; }
+    h1 { font-size: 22px; }
+    h2 { font-size: 18px; margin-top: 24px; }
+    a { color: #0066cc; text-decoration: none; }
+    .item { margin-bottom: 12px; }
+  </style>
+</head>
+<body>
+
+<h1>Hermes Exchange — история размещений</h1>
+
+<p>
+Здесь собрана история публичных размещений и упоминаний сервиса.
+Обновляется еженедельно.
+</p>
+
+<h2>Неделя 1</h2>
+<div class="item">• Polunin Trade — <a href="https://t.me/polunintrade/XXXXX" target="_blank">перейти</a></div>
+<div class="item">• Crypto Insider — <a href="https://t.me/cryptoxxx/XXXXX" target="_blank">перейти</a></div>
+
+<h2>Неделя 2</h2>
+<div class="item">• Another Channel — <a href="https://t.me/channel/XXXXX" target="_blank">перейти</a></div>
+
+</body>
+</html>
