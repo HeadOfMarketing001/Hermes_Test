@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <title>Hermes Exchange - история размещений</title>
+  <style>
+    :root{
+      --bg0:#06070a;
+      --bg1:#0b0d12;
+      --text:#e9ebf0;
+      --muted:rgba(233,235,240,.68);
+      --muted2:rgba(233,235,240,.52);
+      --card:rgba(255,255,255,.055);
+      --card2:rgba(255,255,255,.072);
+      --stroke:rgba(255,255,255,.12);
+      --stroke2:rgba(255,255,255,.16);
+      --shadow: 0 12px 28px rgba(0,0,0,.55);
+      --r:18px;
+    }
+
+    *{ box-sizing:border-box; -webkit-tap-highlight-color: rgba(0,0,0,0); }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji";
+      background:
+        radial-gradient(1200px 700px at 20% -10%, rgba(93,116,255,.22), transparent 60%),
+        radial-gradient(900px 600px at 90% 10%, rgba(39,208,170,.14), transparent 55%),
+        radial-gradient(900px 700px at 50% 110%, rgba(255,99,181,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      color:var(--text);
+      overflow-x:hidden;
+    }
+
+    .wrap{ max-width: 980px; margin:0 auto; padding: 18px 14px 34px; }
+
+    .top{
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 14px 0 10px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      background: linear-gradient(180deg, rgba(6,7,10,.92) 0%, rgba(6,7,10,.72) 70%, rgba(6,7,10,0) 100%);
+    }
+
+    .title{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .brand{
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      font-size: 20px;
+      line-height: 1.2;
+    }
+    .sub{
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+      max-width: 44ch;
+    }
+
+    .counts{
+      display:flex;
+      gap: 10px;
+      align-items:center;
+      flex-wrap: wrap;
+      justify-content:flex-end;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid var(--stroke);
+      color: var(--text);
+      font-size: 12px;
+      line-height: 1;
+      cursor:pointer;
+      user-select:none;
+      transition: transform .12s ease, border-color .12s ease, background .12s ease;
+      touch-action: manipulation;
+    }
+    .pill:active{ transform: scale(.98); }
+    .pill[aria-selected="true"]{
+      background: rgba(255,255,255,.09);
+      border-color: var(--stroke2);
+    }
+
+    .dot{ width:8px; height:8px; border-radius: 999px; background: rgba(255,255,255,.45); }
+    .pill[aria-selected="true"] .dot{ background: rgba(255,255,255,.85); }
+
+    .badge{
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.10);
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.3;
+      white-space: nowrap;
+    }
+
+    .row{
+      display:flex;
+      gap: 10px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .search{
+      margin-top: 10px;
+      display:flex;
+      gap: 10px;
+      align-items:center;
+    }
+    .input{
+      width:100%;
+      padding: 12px 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.045);
+      border: 1px solid var(--stroke);
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+    .input::placeholder{ color: rgba(233,235,240,.45); }
+    .input:focus{ border-color: rgba(255,255,255,.22); background: rgba(255,255,255,.055); }
+
+    .meta{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap: 10px;
+      margin: 12px 0 10px;
+      color: var(--muted2);
+      font-size: 12px;
+    }
+
+    .grid{
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+    }
+
+    .card{
+      display:flex;
+      align-items:center;
+      gap: 12px;
+      padding: 12px;
+      border-radius: var(--r);
+      background: var(--card);
+      border: 1px solid var(--stroke);
+      box-shadow: 0 0 0 rgba(0,0,0,0);
+      overflow:hidden;
+      transition: background .12s ease, border-color .12s ease, transform .12s ease;
+    }
+    .card:hover{ background: var(--card2); border-color: rgba(255,255,255,.18); }
+
+    .left{
+      flex: 1 1 auto;
+      min-width: 0;
+      text-decoration:none;
+      color: inherit;
+      padding: 2px 2px;
+      border-radius: 12px;
+      outline:none;
+      touch-action: manipulation;
+    }
+    .left:focus-visible{ box-shadow: 0 0 0 2px rgba(255,255,255,.20); }
+
+    .name{
+      font-weight: 760;
+      letter-spacing: -0.01em;
+      font-size: 15px;
+      line-height: 1.25;
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
+    .url{
+      margin-top: 3px;
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
+
+    .right{
+      display:flex;
+      gap: 8px;
+      flex: 0 0 auto;
+      align-items:center;
+    }
+
+    .btn{
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.045);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 9px 12px;
+      font-size: 13px;
+      line-height: 1;
+      cursor:pointer;
+      user-select:none;
+      touch-action: manipulation;
+      transition: transform .12s ease, border-color .12s ease, background .12s ease;
+      white-space: nowrap;
+    }
+    .btn:active{ transform: scale(.98); }
+    .btn:hover{ background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.18); }
+
+    .hint{
+      margin-top: 12px;
+      color: var(--muted2);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    /* Mobile polish */
+    @media (max-width: 560px){
+      .wrap{ padding: 14px 12px 28px; }
+      .title{ align-items:flex-start; }
+      .counts{ justify-content:flex-start; }
+      .card{ padding: 12px; gap: 10px; }
+      .right{ gap: 8px; }
+      .btn{ padding: 10px 12px; font-size: 13px; }
+    }
+
+    @media (max-width: 420px){
+      .btn{ padding: 10px 10px; }
+      .name{ font-size: 14px; }
+    }
+
+    /* Reduce sticky artifacts on iOS */
+    @supports (-webkit-touch-callout: none){
+      .top{ background: rgba(6,7,10,.84); }
+    }
+  </style>
+</head>
+<body>
+  <div class="top">
+    <div class="wrap">
+      <div class="title">
+        <div>
+          <div class="brand">Hermes Exchange - история размещений</div>
+          <div class="sub">Открывайте упоминания в один клик. Поиск работает по названию и ссылке</div>
+        </div>
+        <div class="counts" role="tablist" aria-label="Категории">
+          <button class="pill" id="tab-tg" role="tab" aria-selected="true" data-tab="tg" type="button"><span class="dot"></span>Telegram <span class="badge" id="cnt-tg"></span></button>
+          <button class="pill" id="tab-social" role="tab" aria-selected="false" data-tab="social" type="button"><span class="dot"></span>Соцсети <span class="badge" id="cnt-social"></span></button>
+          <button class="pill" id="tab-podcast" role="tab" aria-selected="false" data-tab="podcast" type="button"><span class="dot"></span>Подкасты <span class="badge" id="cnt-podcast"></span></button>
+        </div>
+      </div>
+
+      <div class="search">
+        <input class="input" id="q" type="search" placeholder="Поиск: @канал, название, t.me/..." autocomplete="off" />
+      </div>
+
+      <div class="meta">
+        <div id="meta-left">Показаны все</div>
+        <div id="meta-right">Нажмите "Копия" чтобы сохранить ссылку</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="grid" id="list"></div>
+    <div class="hint" id="hint">
+      Если на iPhone ссылка открывается некорректно - нажмите "Копия" и вставьте в Safari вручную
+    </div>
+  </div>
+
+  <script>
+    const DATA = {
+      tg: [{"type": "tg", "label": "1", "url": "@thevse"}, {"type": "tg", "label": "2", "url": "@crypt0inside"}, {"type": "tg", "label": "3", "url": "@polunintrade"}, {"type": "tg", "label": "4", "url": "@traderanswers"}, {"type": "tg", "label": "5", "url": "@eeusd"}, {"type": "tg", "label": "6", "url": "@ScalpersAlmshouse"}, {"type": "tg", "label": "7", "url": "@altmarate"}, {"type": "tg", "label": "8", "url": "@polunintrade"}, {"type": "tg", "label": "9", "url": "@dashi_eshiev"}, {"type": "tg", "label": "10", "url": "@marsellinvest"}, {"type": "tg", "label": "11", "url": "@cryptobrelgin"}, {"type": "tg", "label": "12", "url": "@cryptoBizLike"}, {"type": "tg", "label": "13", "url": "@sin_cap_algo"}, {"type": "tg", "label": "14", "url": "@Ten_gwei"}, {"type": "tg", "label": "15", "url": "@Gaaapsby"}, {"type": "tg", "label": "16", "url": "@IT_Capital"}, {"type": "tg", "label": "17", "url": "@crypt0inside"}, {"type": "tg", "label": "18", "url": "@gryazinbazar"}, {"type": "tg", "label": "19", "url": "@Crypto_Rank1"}, {"type": "tg", "label": "20", "url": "@firsovventure"}, {"type": "tg", "label": "21", "url": "@Gagarin_ICO"}, {"type": "tg", "label": "22", "url": "@craghackstavern"}, {"type": "tg", "label": "23", "url": "@nefomoeb"}, {"type": "tg", "label": "24", "url": "@awaiting_lifechange"}, {"type": "tg", "label": "25", "url": "@deployladeploy"}, {"type": "tg", "label": "26", "url": "@crypto_resident_notes"}, {"type": "tg", "label": "27", "url": "@cryptowebz"}, {"type": "tg", "label": "28", "url": "@artem_thecreator"}, {"type": "tg", "label": "29", "url": "@thevse"}, {"type": "tg", "label": "30", "url": "@craghack_crypto"}, {"type": "tg", "label": "31", "url": "@coincase"}, {"type": "tg", "label": "32", "url": "@deployladeploy"}, {"type": "tg", "label": "33", "url": "@gigatea"}, {"type": "tg", "label": "34", "url": "@bingx_ofical"}, {"type": "tg", "label": "35", "url": "@naastolovku"}, {"type": "tg", "label": "36", "url": "@firsovventure"}, {"type": "tg", "label": "37", "url": "@polunintrade"}, {"type": "tg", "label": "38", "url": "@marsellinvest"}, {"type": "tg", "label": "39", "url": "@mendel_crypto"}, {"type": "tg", "label": "40", "url": "@worldwideshemi"}, {"type": "tg", "label": "41", "url": "@CryptoRus_25"}, {"type": "tg", "label": "42", "url": "@eeusd"}, {"type": "tg", "label": "43", "url": "@suiciderrrrr"}, {"type": "tg", "label": "44", "url": "@ArtOfResearchChannel"}, {"type": "tg", "label": "45", "url": "@craghackstavern"}, {"type": "tg", "label": "46", "url": "@CryptoVedma"}, {"type": "tg", "label": "47", "url": "@marsellinvest"}, {"type": "tg", "label": "48", "url": "@gryazinbazar"}, {"type": "tg", "label": "49", "url": "@mendel_crypto"}, {"type": "tg", "label": "50", "url": "@bitcoin21ideas"}, {"type": "tg", "label": "51", "url": "Timur_Makhmutoff"}, {"type": "tg", "label": "52", "url": "@cryptonftded"}, {"type": "tg", "label": "53", "url": "@TD_in_crypto"}, {"type": "tg", "label": "54", "url": "@ThorchainRus"}, {"type": "tg", "label": "55", "url": "@Gaaapsby"}, {"type": "tg", "label": "56", "url": "@Gagarin_talk"}, {"type": "tg", "label": "57", "url": "@SaversCrypto"}, {"type": "tg", "label": "58", "url": "@Julia_Zakharchuk"}, {"type": "tg", "label": "59", "url": "@zapiski_divergenta"}, {"type": "tg", "label": "60", "url": "@CryptoPsy_Chanel"}, {"type": "tg", "label": "61", "url": "@coincase"}, {"type": "tg", "label": "62", "url": "@Crypto_Rank1"}, {"type": "tg", "label": "63", "url": "@tearsofaimin"}, {"type": "tg", "label": "64", "url": "@cryptotesemnikov"}, {"type": "tg", "label": "65", "url": "@craghack_chat"}, {"type": "tg", "label": "66", "url": "@awaiting_lifechange"}, {"type": "tg", "label": "67", "url": "@alansi_venture"}, {"type": "tg", "label": "68", "url": "@defi_eth2"}, {"type": "tg", "label": "69", "url": "@soldidi"}, {"type": "tg", "label": "70", "url": "@ZEFIRIUM_CRYPTO"}, {"type": "tg", "label": "71", "url": "@officer_cia"}, {"type": "tg", "label": "72", "url": "@Bitcoin_Cafe"}, {"type": "tg", "label": "73", "url": "@Forward_invest"}, {"type": "tg", "label": "74", "url": "@TON_crypto_talks"}, {"type": "tg", "label": "75", "url": "@crypto_girba"}, {"type": "tg", "label": "76", "url": "@Cat_Whale"}, {"type": "tg", "label": "77", "url": "@AnthillOfCocklomax"}, {"type": "tg", "label": "78", "url": "@homakill"}, {"type": "tg", "label": "79", "url": "@CryptoPsy_Chat"}, {"type": "tg", "label": "80", "url": "@CRYPTORELAKS"}, {"type": "tg", "label": "81", "url": "@nftoned_chat"}, {"type": "tg", "label": "82", "url": "@MyKlondike"}, {"type": "tg", "label": "83", "url": "@blockchain_spirit"}, {"type": "tg", "label": "84", "url": "@ciscrypted"}, {"type": "tg", "label": "85", "url": "@cryptogovno"}, {"type": "tg", "label": "86", "url": "@GO1DENCROSS"}, {"type": "tg", "label": "87", "url": "@theairclaim"}, {"type": "tg", "label": "88", "url": "@synagoygue"}, {"type": "tg", "label": "89", "url": "@waxdrop"}, {"type": "tg", "label": "90", "url": "@r1isaev"}, {"type": "tg", "label": "91", "url": "@DagFlip"}, {"type": "tg", "label": "92", "url": "@speculator_1337"}, {"type": "tg", "label": "93", "url": "@MayCryptonomicsReviews"}, {"type": "tg", "label": "94", "url": "@anytimeanywhereconcierge"}, {"type": "tg", "label": "95", "url": "@Lmeowcity"}, {"type": "tg", "label": "96", "url": "@coincase"}, {"type": "tg", "label": "97", "url": "@anti_fomo_trading"}, {"type": "tg", "label": "98", "url": "@utkacrp"}, {"type": "tg", "label": "99", "url": "@yumify"}, {"type": "tg", "label": "100", "url": "@Sayteamwork"}, {"type": "tg", "label": "101", "url": "@kira_bamboo"}, {"type": "tg", "label": "102", "url": "@eternonotes"}, {"type": "tg", "label": "103", "url": "@crypestor"}, {"type": "tg", "label": "104", "url": "@blockchain_spirit"}, {"type": "tg", "label": "105", "url": "@CryptoGamingPool_News"}, {"type": "tg", "label": "106", "url": "@techcatalyst_vc"}, {"type": "tg", "label": "107", "url": "@ArtOfResearchChannel"}, {"type": "tg", "label": "108", "url": "@ArtOfResearchChannel"}, {"type": "tg", "label": "109", "url": "@craghackstavern"}, {"type": "tg", "label": "110", "url": "@craghackstavern"}, {"type": "tg", "label": "111", "url": "@craghack_crypto"}, {"type": "tg", "label": "112", "url": "@craghack_chat"}, {"type": "tg", "label": "113", "url": "@ThecryptoinvestorTitovEgor"}, {"type": "tg", "label": "114", "url": "@chewacryptology"}, {"type": "tg", "label": "115", "url": "@DensCoin"}, {"type": "tg", "label": "116", "url": "@cryptodays"}, {"type": "tg", "label": "117", "url": "@zerobtcblog"}, {"type": "tg", "label": "118", "url": "@zerobtcblog"}, {"type": "tg", "label": "119", "url": "@klyrosalpha"}, {"type": "tg", "label": "120", "url": "@artemotiochain"}, {"type": "tg", "label": "121", "url": "@Gagarin_ICO"}, {"type": "tg", "label": "122", "url": "@MyKlondike"}, {"type": "tg", "label": "123", "url": "@cartelcooks"}, {"type": "tg", "label": "124", "url": "@cryptoroflston"}, {"type": "tg", "label": "125", "url": "@BapenostInvest"}, {"type": "tg", "label": "126", "url": "@Gaaapsby"}, {"type": "tg", "label": "127", "url": "@Gaaapsby"}, {"type": "tg", "label": "128", "url": "@Gaaapsby"}, {"type": "tg", "label": "129", "url": "@Gaaapsby"}, {"type": "tg", "label": "130", "url": "@Gaaapsby"}, {"type": "tg", "label": "131", "url": "@crypestor"}, {"type": "tg", "label": "132", "url": "@craghackstavern"}, {"type": "tg", "label": "133", "url": "@cryptobrelgin"}, {"type": "tg", "label": "134", "url": "@SaversCrypto"}, {"type": "tg", "label": "135", "url": "@keep_calm_official"}, {"type": "tg", "label": "136", "url": "@cryptobrelgin"}, {"type": "tg", "label": "137", "url": "@cryptobrelgin"}, {"type": "tg", "label": "138", "url": "@baldmikalai"}, {"type": "tg", "label": "139", "url": "@eternonotes"}, {"type": "tg", "label": "140", "url": "@eternonotes"}, {"type": "tg", "label": "141", "url": "@cryptodays"}, {"type": "tg", "label": "142", "url": "@kinomakera"}, {"type": "tg", "label": "143", "url": "@lion_crypto_blog"}, {"type": "tg", "label": "144", "url": "@lion_crypto_blog"}, {"type": "tg", "label": "145", "url": "@IronsTVIP"}, {"type": "tg", "label": "146", "url": "@geekstonmedia"}, {"type": "tg", "label": "147", "url": "@nefomoeb"}, {"type": "tg", "label": "148", "url": "@beloglazovpro"}, {"type": "tg", "label": "149", "url": "@sol_engy"}, {"type": "tg", "label": "150", "url": "@traderanswers"}, {"type": "tg", "label": "151", "url": "@noderschatru"}, {"type": "tg", "label": "152", "url": "@Gagarin_ICO"}, {"type": "tg", "label": "153", "url": "@craghack_crypto"}, {"type": "tg", "label": "154", "url": "@Ten_gwei"}, {"type": "tg", "label": "155", "url": "@blockchain_spirit"}, {"type": "tg", "label": "156", "url": "@cryptodays"}, {"type": "tg", "label": "157", "url": "@cryptobrelgin"}, {"type": "tg", "label": "158", "url": "@DensCoin"}, {"type": "tg", "label": "159", "url": "@chewacryptology"}, {"type": "tg", "label": "160", "url": "@jewlyyn"}, {"type": "tg", "label": "161", "url": "@cryptodays"}, {"type": "tg", "label": "162", "url": "@Ten_gwei"}, {"type": "tg", "label": "163", "url": "@cryptodays"}, {"type": "tg", "label": "164", "url": "@crlaze"}, {"type": "tg", "label": "165", "url": "@Gagarin_ICO"}, {"type": "tg", "label": "166", "url": "@tomoftrade"}, {"type": "tg", "label": "167", "url": "@PopcornCapitals"}, {"type": "tg", "label": "168", "url": "@eternonotes"}, {"type": "tg", "label": "169", "url": "@SaversCrypto"}, {"type": "tg", "label": "170", "url": "@cryptowebz"}, {"type": "tg", "label": "171", "url": "@tondvij"}, {"type": "tg", "label": "172", "url": "@tearsofaimin"}, {"type": "tg", "label": "173", "url": "@synagoygue"}, {"type": "tg", "label": "174", "url": "@chewacryptology"}, {"type": "tg", "label": "175", "url": "@thevse"}, {"type": "tg", "label": "176", "url": "@traderanswers"}, {"type": "tg", "label": "177", "url": "@omg_vibe"}, {"type": "tg", "label": "178", "url": "@myKlonDike"}, {"type": "tg", "label": "179", "url": "@TD_in_crypto"}, {"type": "tg", "label": "180", "url": "@chat_td_in_crypto"}, {"type": "tg", "label": "181", "url": "@cryptobrelgin"}, {"type": "tg", "label": "182", "url": "@eternonotes"}, {"type": "tg", "label": "183", "url": "@Lmeowcity"}, {"type": "tg", "label": "184", "url": "@cryptobrelgin"}, {"type": "tg", "label": "185", "url": "@ArtOfResearchChannel"}, {"type": "tg", "label": "186", "url": "@crypto_man_tg"}, {"type": "tg", "label": "187", "url": "@Gagarin_ICO"}, {"type": "tg", "label": "188", "url": "@TDmitryT"}, {"type": "tg", "label": "189", "url": "@bondarenkoLife"}, {"type": "tg", "label": "190", "url": "@scalpingXanXanbl4"}, {"type": "tg", "label": "191", "url": "@officer_cia"}, {"type": "tg", "label": "192", "url": "@craghack_crypto"}, {"type": "tg", "label": "193", "url": "@cryptobrelgin"}, {"type": "tg", "label": "194", "url": "@nefomoeb"}, {"type": "tg", "label": "195", "url": "@thecryptoartem"}, {"type": "tg", "label": "196", "url": "@zerobtcblog"}, {"type": "tg", "label": "197", "url": "@scalpingXanXanbl4"}, {"type": "tg", "label": "198", "url": "@kinomakera"}, {"type": "tg", "label": "199", "url": "@cryptodays"}, {"type": "tg", "label": "200", "url": "@CRYPTORELAKS"}, {"type": "tg", "label": "201", "url": "@geekstonmedia"}, {"type": "tg", "label": "202", "url": "@waxdrop"}, {"type": "tg", "label": "203", "url": "@gryazinbazar"}, {"type": "tg", "label": "204", "url": "@orderincryptochaos"}, {"type": "tg", "label": "205", "url": "@rqmun"}, {"type": "tg", "label": "206", "url": "@cheprinter"}, {"type": "tg", "label": "207", "url": "@ZEFIRIUM_CRYPTO"}, {"type": "tg", "label": "208", "url": "@craghack_crypto"}, {"type": "tg", "label": "209", "url": "@theairclaim"}, {"type": "tg", "label": "210", "url": "@cryptobrelgin"}, {"type": "tg", "label": "211", "url": "@Ten_gwei"}, {"type": "tg", "label": "212", "url": "@bondarenkoLife"}, {"type": "tg", "label": "213", "url": "@cryptotesemnikov"}, {"type": "tg", "label": "214", "url": "@coincase"}, {"type": "tg", "label": "215", "url": "@cryptotesemnikov"}, {"type": "tg", "label": "216", "url": "@sqwizeeETH"}, {"type": "tg", "label": "217", "url": "@Damiroff_K"}, {"type": "tg", "label": "218", "url": "@orderincryptochaos"}, {"type": "tg", "label": "219", "url": "@MaxDY0R"}, {"type": "tg", "label": "220", "url": "@Gagarin_ICO"}, {"type": "tg", "label": "221", "url": "@firsovventure"}, {"type": "tg", "label": "222", "url": "@thevse"}, {"type": "tg", "label": "223", "url": "@truecryptok"}, {"type": "tg", "label": "224", "url": "@gryazinbazar"}, {"type": "tg", "label": "225", "url": "@firsovventure"}, {"type": "tg", "label": "226", "url": "@ExchangeSpeculator"}, {"type": "tg", "label": "227", "url": "@cryptobrelgin"}, {"type": "tg", "label": "228", "url": "@deployladeploy"}, {"type": "tg", "label": "229", "url": "@craghackstavern"}, {"type": "tg", "label": "230", "url": "@thecryptoartem"}, {"type": "tg", "label": "231", "url": "@cryptodays"}, {"type": "tg", "label": "232", "url": "@chewacryptology"}, {"type": "tg", "label": "233", "url": "@Gagarin_ICO"}, {"type": "tg", "label": "234", "url": "@BapenostInvest"}, {"type": "tg", "label": "235", "url": "@cryptobrelgin"}, {"type": "tg", "label": "236", "url": "@ZEFIRIUM_CRYPTO"}, {"type": "tg", "label": "237", "url": "@theairclaim"}, {"type": "tg", "label": "238", "url": "@WingsNodeTeam"}, {"type": "tg", "label": "239", "url": "@firsovventure"}, {"type": "tg", "label": "240", "url": "@craghack_crypto"}, {"type": "tg", "label": "241", "url": "@artem_thecreator"}, {"type": "tg", "label": "242", "url": "@cryptonftded"}, {"type": "tg", "label": "243", "url": "@crypt0inside"}, {"type": "tg", "label": "244", "url": "@gryazinbazar"}, {"type": "tg", "label": "245", "url": "@profit0r"}, {"type": "tg", "label": "246", "url": "@lion_crypto_blog"}, {"type": "tg", "label": "247", "url": "@mendel_crypto"}, {"type": "tg", "label": "248", "url": "@Crypto_MVP2025"}, {"type": "tg", "label": "249", "url": "@tondvij"}, {"type": "tg", "label": "250", "url": "@dnevnik_boevik"}, {"type": "tg", "label": "251", "url": "@coincase"}, {"type": "tg", "label": "252", "url": "@cryptomokakke"}, {"type": "tg", "label": "253", "url": "@cryptomokakke"}, {"type": "tg", "label": "254", "url": "@profit0r"}, {"type": "tg", "label": "255", "url": "@DensCoin"}, {"type": "tg", "label": "256", "url": "@anti_fomo_trading"}, {"type": "tg", "label": "257", "url": "@Gagarin_ICO"}, {"type": "tg", "label": "258", "url": "@deployladeploy"}, {"type": "tg", "label": "259", "url": "@SolTimer"}, {"type": "tg", "label": "260", "url": "@vaqucrypto"}, {"type": "tg", "label": "261", "url": "@gryazinbazar"}, {"type": "tg", "label": "262", "url": "@Turing_consensus"}, {"type": "tg", "label": "263", "url": "@deployladeploy"}, {"type": "tg", "label": "264", "url": "@mendel_crypto"}, {"type": "tg", "label": "265", "url": "@Lmeowcity"}, {"type": "tg", "label": "266", "url": "@nikitrade_gang"}, {"type": "tg", "label": "267", "url": "@cryptoBizLike"}, {"type": "tg", "label": "268", "url": "@crypestor"}, {"type": "tg", "label": "269", "url": "@r1isaev"}, {"type": "tg", "label": "270", "url": "@OlegInvest"}, {"type": "tg", "label": "271", "url": "@OlegInvest"}, {"type": "tg", "label": "272", "url": "@OlegInvest"}, {"type": "tg", "label": "273", "url": "@truecryptok"}, {"type": "tg", "label": "274", "url": "@omg_vibe"}, {"type": "tg", "label": "275", "url": "@Forward_invest"}, {"type": "tg", "label": "276", "url": "@cryptobrelgin"}, {"type": "tg", "label": "277", "url": "@cheprinter"}, {"type": "tg", "label": "278", "url": "@gryazinbazar"}, {"type": "tg", "label": "279", "url": "@dnevnik_boevik"}, {"type": "tg", "label": "280", "url": "@Crypto_CheG1"}, {"type": "tg", "label": "281", "url": "@magicoctopuss"}, {"type": "tg", "label": "282", "url": "@DagFlip"}, {"type": "tg", "label": "283", "url": "@DagFlip"}, {"type": "tg", "label": "284", "url": "@jewlyyn"}, {"type": "tg", "label": "285", "url": "@coincase"}, {"type": "tg", "label": "286", "url": "@sol_engy"}, {"type": "tg", "label": "287", "url": "@craghack_crypto"}, {"type": "tg", "label": "288", "url": "@omg_vibe"}, {"type": "tg", "label": "289", "url": "@mendel_crypto"}, {"type": "tg", "label": "290", "url": "@Gagarin_ICO"}, {"type": "tg", "label": "291", "url": "@cryptoBizLike"}, {"type": "tg", "label": "292", "url": "@keep_calm_official"}, {"type": "tg", "label": "293", "url": "@nefomoeb"}, {"type": "tg", "label": "294", "url": "@coincase"}, {"type": "tg", "label": "295", "url": "@bingx_ofical"}, {"type": "tg", "label": "296", "url": "@artem_thecreator"}, {"type": "tg", "label": "297", "url": "@gryazinbazar"}, {"type": "tg", "label": "298", "url": "@firsovventure"}, {"type": "tg", "label": "299", "url": "@deployladeploy"}, {"type": "tg", "label": "300", "url": "@mendel_crypto"}, {"type": "tg", "label": "301", "url": "@SolTimer"}, {"type": "tg", "label": "302", "url": "@kdludit"}, {"type": "tg", "label": "303", "url": "@bingx_ofical"}, {"type": "tg", "label": "304", "url": "@gigatea"}, {"type": "tg", "label": "305", "url": "@profit0r"}, {"type": "tg", "label": "306", "url": "@scalpingXanXanbl4"}, {"type": "tg", "label": "307", "url": "@polunintrade"}, {"type": "tg", "label": "308", "url": "@VICRYPTOS"}, {"type": "tg", "label": "309", "url": "@hadesboy_eth"}, {"type": "tg", "label": "310", "url": "@profit0r"}, {"type": "tg", "label": "311", "url": "@firsovventure"}, {"type": "tg", "label": "312", "url": "@runonflux_ru"}, {"type": "tg", "label": "313", "url": "@gryazinbazar"}, {"type": "tg", "label": "314", "url": "@eeusd"}, {"type": "tg", "label": "315", "url": "@crypto_gst"}, {"type": "tg", "label": "316", "url": "@crypto_gst"}, {"type": "tg", "label": "317", "url": "@PopcornCapitals"}, {"type": "tg", "label": "318", "url": "@PopcornCapitals"}, {"type": "tg", "label": "319", "url": "@theairclaim"}, {"type": "tg", "label": "320", "url": "@kinomakera"}, {"type": "tg", "label": "321", "url": "@nefomoeb"}, {"type": "tg", "label": "322", "url": "@omg_vibe"}, {"type": "tg", "label": "323", "url": "@ZEFIRIUM_CRYPTO"}, {"type": "tg", "label": "324", "url": "@truecrypto"}, {"type": "tg", "label": "325", "url": "@deployladeploy"}, {"type": "tg", "label": "326", "url": "@Crypto_CheG1"}, {"type": "tg", "label": "327", "url": "@thevse"}, {"type": "tg", "label": "328", "url": "@thevse"}, {"type": "tg", "label": "329", "url": "@thevse"}, {"type": "tg", "label": "330", "url": "@thevse"}, {"type": "tg", "label": "331", "url": "@thevse"}, {"type": "tg", "label": "332", "url": "@thevse"}, {"type": "tg", "label": "333", "url": "@FutureChainNews"}, {"type": "tg", "label": "334", "url": "@jamesrichcrypto"}, {"type": "tg", "label": "335", "url": "@polunintrade"}, {"type": "tg", "label": "336", "url": "@omg_vibe"}, {"type": "tg", "label": "337", "url": "@DensCoin"}, {"type": "tg", "label": "338", "url": "@sin_cap_algo"}, {"type": "tg", "label": "339", "url": "@kremlevS"}, {"type": "tg", "label": "340", "url": "@runonflux_ru"}, {"type": "tg", "label": "341", "url": "@nefomoeb"}, {"type": "tg", "label": "342", "url": "@tomoftrade"}, {"type": "tg", "label": "343", "url": "@bafet"}, {"type": "tg", "label": "344", "url": "@WingsNodeTeam"}, {"type": "tg", "label": "345", "url": "@FutureChainNews"}, {"type": "tg", "label": "346", "url": "@cryptart"}, {"type": "tg", "label": "347", "url": "@marsellinvest"}, {"type": "tg", "label": "348", "url": "@marsellinvest"}, {"type": "tg", "label": "349", "url": "@rqmun"}, {"type": "tg", "label": "350", "url": "@theairclaim"}, {"type": "tg", "label": "351", "url": "@artem_thecreator"}, {"type": "tg", "label": "352", "url": "@mendel_crypto"}, {"type": "tg", "label": "353", "url": "@dnevnik_boevik"}, {"type": "tg", "label": "354", "url": "@cryptomokakke"}, {"type": "tg", "label": "355", "url": "@thevse"}, {"type": "tg", "label": "356", "url": "@marsellinvest"}, {"type": "tg", "label": "357", "url": "@ManinTG_blog"}, {"type": "tg", "label": "358", "url": "@criptobitochek"}, {"type": "tg", "label": "359", "url": "@criptobitochek"}, {"type": "tg", "label": "360", "url": "@criptobitochek"}, {"type": "tg", "label": "361", "url": "@polunintrade"}, {"type": "tg", "label": "362", "url": "@profit0r"}, {"type": "tg", "label": "363", "url": "@nikitrade_gang"}, {"type": "tg", "label": "364", "url": "@FutureChainNews"}, {"type": "tg", "label": "365", "url": "@vladkapitals"}, {"type": "tg", "label": "366", "url": "@Gagarin_ICO"}, {"type": "tg", "label": "367", "url": "@obmen24"}, {"type": "tg", "label": "368", "url": "@OI_Delta"}, {"type": "tg", "label": "369", "url": "@craghack_crypto"}, {"type": "tg", "label": "370", "url": "@bingx_ofical"}, {"type": "tg", "label": "371", "url": "@pechatniystanok"}, {"type": "tg", "label": "372", "url": "@cryptoprosto7"}, {"type": "tg", "label": "373", "url": "@omg_vibe"}, {"type": "tg", "label": "374", "url": "@CRYPTORELAKS"}, {"type": "tg", "label": "375", "url": "@cryptotesemnikov"}, {"type": "tg", "label": "376", "url": "@cryptonftded"}, {"type": "tg", "label": "377", "url": "@crypto_cheg1"}, {"type": "tg", "label": "378", "url": "@runonflux_ru"}, {"type": "tg", "label": "379", "url": "@thevse"}, {"type": "tg", "label": "380", "url": "@jamesrichcrypto"}, {"type": "tg", "label": "381", "url": "@whale_denis"}, {"type": "tg", "label": "382", "url": "@whale_denis"}, {"type": "tg", "label": "383", "url": "@utkacrp"}, {"type": "tg", "label": "384", "url": "@AlexeyInvestiruet"}, {"type": "tg", "label": "385", "url": "@CGPDrops"}, {"type": "tg", "label": "386", "url": "@bondarenkoLife"}, {"type": "tg", "label": "387", "url": "@speculator_1337"}, {"type": "tg", "label": "388", "url": "@marsellinvest"}, {"type": "tg", "label": "389", "url": "@polunintrade"}, {"type": "tg", "label": "390", "url": "@ArtOfResearchChannel"}, {"type": "tg", "label": "391", "url": "@ArtOfResearchChannel"}, {"type": "tg", "label": "392", "url": "@Dr_Trada"}, {"type": "tg", "label": "393", "url": "@ManinTG_blog"}, {"type": "tg", "label": "394", "url": "@nymeroynosalpha"}, {"type": "tg", "label": "395", "url": "@whale_denis"}, {"type": "tg", "label": "396", "url": "@DensCoin"}, {"type": "tg", "label": "397", "url": "@crypteeka"}, {"type": "tg", "label": "398", "url": "@mopsikisolana"}, {"type": "tg", "label": "399", "url": "@vladkapitals"}, {"type": "tg", "label": "400", "url": "@cryptoscanner_chat"}, {"type": "tg", "label": "401", "url": "@RTMscalp"}, {"type": "tg", "label": "402", "url": "@RTMscalp"}, {"type": "tg", "label": "403", "url": "@vaqucrypto"}, {"type": "tg", "label": "404", "url": "@zerobtcblog"}, {"type": "tg", "label": "405", "url": "@theairclaim"}, {"type": "tg", "label": "406", "url": "@bingx_ofical"}, {"type": "tg", "label": "407", "url": "@cheprinter"}, {"type": "tg", "label": "408", "url": "@deployladeploy"}, {"type": "tg", "label": "409", "url": "@OlegInvest"}, {"type": "tg", "label": "410", "url": "@OlegInvest"}, {"type": "tg", "label": "411", "url": "@OlegInvest"}, {"type": "tg", "label": "412", "url": "@crypto_cheg1"}, {"type": "tg", "label": "413", "url": "@bafet"}, {"type": "tg", "label": "414", "url": "@thevse"}, {"type": "tg", "label": "415", "url": "@CCTRDE"}, {"type": "tg", "label": "416", "url": "@signali"}, {"type": "tg", "label": "417", "url": "@tondvij"}, {"type": "tg", "label": "418", "url": "@omg_vibe"}, {"type": "tg", "label": "419", "url": "@WingsNodeTeam"}, {"type": "tg", "label": "420", "url": "@Lmeowcity"}, {"type": "tg", "label": "421", "url": "@Crypto_MVP2025"}, {"type": "tg", "label": "422", "url": "@profit0r"}, {"type": "tg", "label": "423", "url": "@firsovventure"}, {"type": "tg", "label": "424", "url": "@SZCRYPTO888"}, {"type": "tg", "label": "425", "url": "@nefomoeb"}, {"type": "tg", "label": "426", "url": "@polunintrade"}, {"type": "tg", "label": "427", "url": "@criptobitochek"}, {"type": "tg", "label": "428", "url": "@myKlonDike"}, {"type": "tg", "label": "429", "url": "@ThorchainRus"}, {"type": "tg", "label": "430", "url": "@runetradingru2"}, {"type": "tg", "label": "431", "url": "@cryptodays"}, {"type": "tg", "label": "432", "url": "@eternonotes"}, {"type": "tg", "label": "433", "url": "@Trader_Legion"}, {"type": "tg", "label": "434", "url": "@mendel_crypto"}, {"type": "tg", "label": "435", "url": "@cryptogangstermoney"}, {"type": "tg", "label": "436", "url": "@artemotiochain"}, {"type": "tg", "label": "437", "url": "@LVVfrom"}, {"type": "tg", "label": "438", "url": "@SaversCrypto"}, {"type": "tg", "label": "439", "url": "@coincase"}, {"type": "tg", "label": "440", "url": "@theairclaim"}, {"type": "tg", "label": "441", "url": "@burminator"}, {"type": "tg", "label": "442", "url": "@profit0r"}, {"type": "tg", "label": "443", "url": "@thecryptoartem"}, {"type": "tg", "label": "444", "url": "@ZEFIRIUM_CRYPTO"}, {"type": "tg", "label": "445", "url": "@deployladeploy"}, {"type": "tg", "label": "446", "url": "@dnevnik_boevik"}, {"type": "tg", "label": "447", "url": "@cryptomokakke"}, {"type": "tg", "label": "448", "url": "@magicoctopuss"}, {"type": "tg", "label": "449", "url": "@obmen24"}, {"type": "tg", "label": "450", "url": "@obmen24"}, {"type": "tg", "label": "451", "url": "@thevse"}, {"type": "tg", "label": "452", "url": "@psclama"}, {"type": "tg", "label": "453", "url": "@nikitrade_gang"}, {"type": "tg", "label": "454", "url": "@SSMAXS"}, {"type": "tg", "label": "455", "url": "@polunintrade"}, {"type": "tg", "label": "456", "url": "@firsovventure"}, {"type": "tg", "label": "457", "url": "@crypto_cheg1"}, {"type": "tg", "label": "458", "url": "@SolTimer"}, {"type": "tg", "label": "459", "url": "@Turing_consensus"}, {"type": "tg", "label": "460", "url": "@awaiting_lifechange"}, {"type": "tg", "label": "461", "url": "@bingx_ofical"}, {"type": "tg", "label": "462", "url": "@yumify"}, {"type": "tg", "label": "463", "url": "@DensCoin"}, {"type": "tg", "label": "464", "url": "@u7niversaldao"}, {"type": "tg", "label": "465", "url": "@Ten_gwei"}, {"type": "tg", "label": "466", "url": "@softl0ck"}, {"type": "tg", "label": "467", "url": "@truecrypto"}, {"type": "tg", "label": "468", "url": "@vaqucrypto"}, {"type": "tg", "label": "469", "url": "@profit0r"}, {"type": "tg", "label": "470", "url": "@profit0r"}, {"type": "tg", "label": "471", "url": "@SZCRYPTO888"}, {"type": "tg", "label": "472", "url": "@lion_crypto_blog"}, {"type": "tg", "label": "473", "url": "@FutureChainNews"}, {"type": "tg", "label": "474", "url": "@theairclaim"}, {"type": "tg", "label": "475", "url": "@omg_vibe"}, {"type": "tg", "label": "476", "url": "@CRYPTORELAKS"}, {"type": "tg", "label": "477", "url": "@ZEFIRIUM_CRYPTO"}, {"type": "tg", "label": "478", "url": "@sqwizeeETH"}, {"type": "tg", "label": "479", "url": "@crypto_cheg1"}, {"type": "tg", "label": "480", "url": "@crypto_cheg1"}, {"type": "tg", "label": "481", "url": "@crypto_cheg1"}, {"type": "tg", "label": "482", "url": "@speculator_1337"}, {"type": "tg", "label": "483", "url": "@crypto_cheg1"}, {"type": "tg", "label": "484", "url": "@crypto_gst"}, {"type": "tg", "label": "485", "url": "@criptobitochek"}, {"type": "tg", "label": "486", "url": "@OI_Delta"}, {"type": "tg", "label": "487", "url": "@vladkapitals"}, {"type": "tg", "label": "488", "url": "@omg_vibe"}, {"type": "tg", "label": "489", "url": "@FutureChainNews"}, {"type": "tg", "label": "490", "url": "@polunintrade"}, {"type": "tg", "label": "491", "url": "@SZCRYPTO888"}, {"type": "tg", "label": "492", "url": "@nefomoeb"}, {"type": "tg", "label": "493", "url": "@thecryptoartem"}, {"type": "tg", "label": "494", "url": "@marsellinvest"}, {"type": "tg", "label": "495", "url": "@nikitrade_gang"}, {"type": "tg", "label": "496", "url": "@profit0r"}, {"type": "tg", "label": "497", "url": "@cryptodays"}, {"type": "tg", "label": "498", "url": "@PopcornCapitals"}, {"type": "tg", "label": "499", "url": "@bafet"}, {"type": "tg", "label": "500", "url": "@b1gfamam"}, {"type": "tg", "label": "501", "url": "@OxMeur"}, {"type": "tg", "label": "502", "url": "@OI_Delta"}, {"type": "tg", "label": "503", "url": "@cryptobrelgin"}, {"type": "tg", "label": "504", "url": "@bondarenkoLife"}, {"type": "tg", "label": "505", "url": "@cryptotesemnikov"}, {"type": "tg", "label": "506", "url": "@mendel_crypto"}, {"type": "tg", "label": "507", "url": "@thevse"}, {"type": "tg", "label": "508", "url": "@SZCRYPTO888"}, {"type": "tg", "label": "509", "url": "@criptobitochek"}, {"type": "tg", "label": "510", "url": "@LVVfrom"}, {"type": "tg", "label": "511", "url": "@omg_vibe"}, {"type": "tg", "label": "512", "url": "@RTMscalp"}, {"type": "tg", "label": "513", "url": "@atmtrading_academy"}, {"type": "tg", "label": "514", "url": "@marsellinvest"}, {"type": "tg", "label": "515", "url": "@FutureChainNews"}, {"type": "tg", "label": "516", "url": "@cryptonftded"}, {"type": "tg", "label": "517", "url": "@criptobitochek"}, {"type": "tg", "label": "518", "url": "@craghack_crypto"}, {"type": "tg", "label": "519", "url": "@soldidi"}, {"type": "tg", "label": "520", "url": "@techcatalyst_vc"}, {"type": "tg", "label": "521", "url": "@WingsNodeTeam"}, {"type": "tg", "label": "522", "url": "@gryazinbazar"}, {"type": "tg", "label": "523", "url": "@crypto_cheg1"}, {"type": "tg", "label": "524", "url": "@CRYPTORELAKS"}, {"type": "tg", "label": "525", "url": "@lizacallitgvalu"}, {"type": "tg", "label": "526", "url": "@geraltsol"}, {"type": "tg", "label": "527", "url": "@DensCoin"}, {"type": "tg", "label": "528", "url": "@eternonotes"}, {"type": "tg", "label": "529", "url": "@esheleverst"}, {"type": "tg", "label": "530", "url": "@lizacallitgvalu"}, {"type": "tg", "label": "531", "url": "@lizacallit"}],
+      social: [{"type": "social", "platform": "1", "label": "1", "url": "Discord"}, {"type": "social", "platform": "2", "label": "2", "url": "YouTube"}, {"type": "social", "platform": "3", "label": "3", "url": "YouTube"}, {"type": "social", "platform": "4", "label": "4", "url": "YouTube"}, {"type": "social", "platform": "5", "label": "5", "url": "YouTube"}, {"type": "social", "platform": "6", "label": "6", "url": "axl.uporovdefi.pro"}, {"type": "social", "platform": "7", "label": "7", "url": "YouTube"}, {"type": "social", "platform": "8", "label": "8", "url": "YouTube"}, {"type": "social", "platform": "9", "label": "9", "url": "YouTube"}, {"type": "social", "platform": "10", "label": "10", "url": "Discord"}, {"type": "social", "platform": "11", "label": "11", "url": "YouTube"}, {"type": "social", "platform": "12", "label": "12", "url": "YouTube"}, {"type": "social", "platform": "13", "label": "13", "url": "YouTube"}, {"type": "social", "platform": "14", "label": "14", "url": "Instagram"}, {"type": "social", "platform": "15", "label": "15", "url": "Instagram"}, {"type": "social", "platform": "16", "label": "16", "url": "t.me"}, {"type": "social", "platform": "17", "label": "17", "url": "CryptoEmergency"}, {"type": "social", "platform": "18", "label": "18", "url": "Criptovalyta"}, {"type": "social", "platform": "19", "label": "19", "url": "Twitter"}, {"type": "social", "platform": "20", "label": "20", "url": "YouTube"}, {"type": "social", "platform": "21", "label": "21", "url": "Twitter"}, {"type": "social", "platform": "22", "label": "22", "url": "CryptoEmergency"}, {"type": "social", "platform": "23", "label": "23", "url": "CryptoEmergency"}, {"type": "social", "platform": "24", "label": "24", "url": "YouTube"}, {"type": "social", "platform": "25", "label": "25", "url": "YouTube"}, {"type": "social", "platform": "26", "label": "26", "url": "YouTube"}, {"type": "social", "platform": "27", "label": "27", "url": "Teletype"}, {"type": "social", "platform": "28", "label": "28", "url": "CryptoEmergency"}, {"type": "social", "platform": "29", "label": "29", "url": "CryptoEmergency"}, {"type": "social", "platform": "30", "label": "30", "url": "YouTube"}, {"type": "social", "platform": "31", "label": "31", "url": "YouTube"}, {"type": "social", "platform": "32", "label": "32", "url": "YouTube"}, {"type": "social", "platform": "33", "label": "33", "url": "YouTube"}, {"type": "social", "platform": "34", "label": "34", "url": "Discord"}, {"type": "social", "platform": "35", "label": "35", "url": "Teletype"}],
+      podcast: [{"type": "podcast", "label": "1", "url": "THEVSE 1 (YouTube)"}, {"type": "podcast", "label": "2", "url": "THEVSE x Hermes 2ч. (YouTube)"}, {"type": "podcast", "label": "3", "url": "0xCragHack (с 22:47)"}]
+    };
+
+    const state = { tab: 'tg', q: '' };
+
+    const $ = (id) => document.getElementById(id);
+    const list = $('list');
+
+    function setCounts(){
+      $('cnt-tg').textContent = DATA.tg.length;
+      $('cnt-social').textContent = DATA.social.length;
+      $('cnt-podcast').textContent = DATA.podcast.length;
+    }
+
+    function normalize(s){
+      return (s||'').toString().toLowerCase();
+    }
+
+    async function copyText(txt){
+      try{
+        await navigator.clipboard.writeText(txt);
+        return true;
+      }catch(e){
+        // fallback
+        const ta=document.createElement('textarea');
+        ta.value=txt;
+        ta.style.position='fixed';
+        ta.style.opacity='0';
+        document.body.appendChild(ta);
+        ta.select();
+        const ok=document.execCommand('copy');
+        document.body.removeChild(ta);
+        return ok;
+      }
+    }
+
+    function makeCard(item){
+      const card = document.createElement('div');
+      card.className = 'card';
+
+      const a = document.createElement('a');
+      a.className = 'left';
+      a.href = item.url;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+
+      const name = document.createElement('div');
+      name.className = 'name';
+      name.textContent = item.name;
+
+      const url = document.createElement('div');
+      url.className = 'url';
+      url.textContent = item.display || item.url.replace('https://','');
+
+      a.appendChild(name);
+      a.appendChild(url);
+
+      const right = document.createElement('div');
+      right.className = 'right';
+
+      // Optional platform badge for non-TG
+      if(item.platform){
+        const b = document.createElement('span');
+        b.className = 'badge';
+        b.textContent = item.platform;
+        right.appendChild(b);
+      }
+
+      const openBtn = document.createElement('button');
+      openBtn.type = 'button';
+      openBtn.className = 'btn';
+      openBtn.textContent = 'Открыть';
+      openBtn.addEventListener('click', () => window.open(item.url, '_blank', 'noopener'));
+
+      const copyBtn = document.createElement('button');
+      copyBtn.type = 'button';
+      copyBtn.className = 'btn';
+      copyBtn.textContent = 'Копия';
+      copyBtn.addEventListener('click', async () => {
+        const ok = await copyText(item.url);
+        copyBtn.textContent = ok ? 'Скопировано' : 'Ошибка';
+        setTimeout(()=> copyBtn.textContent='Копия', 900);
+      });
+
+      right.appendChild(openBtn);
+      right.appendChild(copyBtn);
+
+      card.appendChild(a);
+      card.appendChild(right);
+      return card;
+    }
+
+    function render(){
+      const q = normalize(state.q);
+      const items = DATA[state.tab];
+
+      const filtered = q
+        ? items.filter(x => normalize(x.name).includes(q) || normalize(x.url).includes(q) || normalize(x.display).includes(q) || normalize(x.platform).includes(q))
+        : items;
+
+      list.innerHTML = '';
+      const frag = document.createDocumentFragment();
+      for (const item of filtered){
+        frag.appendChild(makeCard(item));
+      }
+      list.appendChild(frag);
+
+      $('meta-left').textContent = q ? `Найдено: ${filtered.length}` : `Показаны: ${filtered.length}`;
+    }
+
+    function setTab(tab){
+      state.tab = tab;
+      // toggle aria-selected
+      for(const el of document.querySelectorAll('.pill')){
+        el.setAttribute('aria-selected', el.dataset.tab === tab ? 'true' : 'false');
+      }
+      render();
+    }
+
+    // wire tabs
+    for(const el of document.querySelectorAll('.pill')){
+      el.addEventListener('click', () => setTab(el.dataset.tab));
+    }
+
+    $('q').addEventListener('input', (e) => { state.q = e.target.value; render(); });
+
+    setCounts();
+    render();
+  </script>
+</body>
+</html>
