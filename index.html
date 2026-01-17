@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <title>Hermes Placements</title>
+  <style>
+    :root{
+      --bg:#0b0f17;
+      --panel:#0f1623;
+      --card:#121b2a;
+      --card2:#101827;
+      --border:rgba(255,255,255,.08);
+      --text:rgba(255,255,255,.92);
+      --muted:rgba(255,255,255,.65);
+      --muted2:rgba(255,255,255,.5);
+      --accent:#7aa2ff;
+      --accent2:#4dd4ff;
+      --shadow:0 14px 40px rgba(0,0,0,.45);
+      --radius:18px;
+      --radius2:14px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+      background: radial-gradient(1200px 700px at 30% -10%, rgba(122,162,255,.18), transparent 60%),
+                  radial-gradient(900px 600px at 90% 10%, rgba(77,212,255,.12), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -webkit-tap-highlight-color:transparent;
+    }
+    a{color:inherit}
+
+    .wrap{max-width:980px;margin:0 auto;padding:18px 14px 40px}
+
+    .header{
+      position:sticky;top:0;z-index:50;
+      backdrop-filter: blur(14px);
+      background: linear-gradient(to bottom, rgba(11,15,23,.92), rgba(11,15,23,.72));
+      border-bottom:1px solid var(--border);
+    }
+    .header .wrap{padding:14px 14px}
+
+    .topbar{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .brand{display:flex;flex-direction:column;gap:3px;min-width:220px}
+    .brand h1{font-size:18px;letter-spacing:.2px;margin:0}
+    .brand .sub{font-size:12.5px;color:var(--muted)}
+
+    .chips{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:flex-end}
+    .chip{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:8px 10px;
+      background: rgba(255,255,255,.04);
+      border:1px solid var(--border);
+      border-radius:999px;
+      font-size:12.5px;
+      color:var(--muted);
+      user-select:none;
+      cursor:pointer;
+    }
+    .chip strong{color:var(--text);font-weight:600}
+    .chip.active{
+      background: linear-gradient(135deg, rgba(122,162,255,.18), rgba(77,212,255,.10));
+      border-color: rgba(122,162,255,.35);
+      color:var(--text);
+    }
+
+    .controls{margin-top:12px;display:flex;gap:10px;flex-wrap:wrap}
+    .search{
+      flex:1 1 280px;
+      display:flex;align-items:center;gap:10px;
+      padding:12px 12px;
+      background: rgba(255,255,255,.04);
+      border:1px solid var(--border);
+      border-radius:14px;
+    }
+    .search svg{opacity:.75}
+    .search input{
+      width:100%;
+      background:transparent;
+      border:0;
+      outline:none;
+      color:var(--text);
+      font-size:14px;
+    }
+    .pill{
+      flex:0 0 auto;
+      display:flex;align-items:center;gap:8px;
+      padding:12px 12px;
+      background: rgba(255,255,255,.04);
+      border:1px solid var(--border);
+      border-radius:14px;
+      font-size:13px;
+      color:var(--muted);
+      user-select:none;
+    }
+
+    .section{margin-top:18px}
+
+    .frame{
+      border:1px solid rgba(122,162,255,.22);
+      background: linear-gradient(180deg, rgba(122,162,255,.06), rgba(255,255,255,.02));
+      box-shadow: 0 0 0 1px rgba(255,255,255,.02) inset, var(--shadow);
+      border-radius: var(--radius);
+      padding:14px;
+    }
+
+    .list{display:flex;flex-direction:column;gap:10px}
+
+    .card{
+      display:flex;
+      align-items:stretch;
+      justify-content:space-between;
+      gap:10px;
+      padding:12px 12px;
+      border-radius: var(--radius2);
+      border:1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.02));
+      box-shadow: 0 0 0 1px rgba(0,0,0,.12) inset;
+      overflow:hidden;
+    }
+
+    .left{min-width:0;display:flex;flex-direction:column;gap:4px}
+    .name{font-size:15px;font-weight:650;line-height:1.15;letter-spacing:.1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .url{font-size:12.5px;color:var(--muted2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+    .actions{flex:0 0 auto;display:flex;gap:8px;align-items:center}
+
+    .btn{
+      appearance:none;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      color:var(--text);
+      border-radius: 12px;
+      padding:10px 12px;
+      font-size:13px;
+      line-height:1;
+      cursor:pointer;
+      user-select:none;
+      min-width:104px;
+      text-align:center;
+    }
+    .btn.primary{
+      border-color: rgba(122,162,255,.35);
+      background: linear-gradient(135deg, rgba(122,162,255,.22), rgba(77,212,255,.12));
+    }
+    .btn:active{transform:translateY(1px)}
+
+    .btn.outline{
+      border-color: rgba(255,255,255,.14);
+      background: transparent;
+    }
+
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:18px;
+      transform:translateX(-50%);
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background: rgba(15,22,35,.92);
+      color:var(--text);
+      font-size:13px;
+      box-shadow: var(--shadow);
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .18s ease, transform .18s ease;
+    }
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(-2px)}
+
+    .empty{
+      margin-top:14px;
+      padding:16px;
+      border-radius: var(--radius);
+      border:1px dashed rgba(255,255,255,.18);
+      color:var(--muted);
+      background: rgba(255,255,255,.02);
+    }
+
+    @media (max-width:520px){
+      .wrap{padding:14px 12px 34px}
+      .brand{min-width:auto}
+      .brand h1{font-size:16px}
+      .brand .sub{font-size:12px}
+
+      .card{padding:12px 12px}
+      .name{font-size:15px}
+      .actions{gap:8px}
+      .btn{min-width:auto;padding:10px 10px}
+
+      /* stack actions under on very small widths */
+      .card{flex-direction:column;gap:10px}
+      .actions{width:100%}
+      .btn{flex:1 1 0}
+    }
+
+    /* prevent stuck blue highlight on touch */
+    .card:focus, .card:active{outline:none}
+
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="wrap">
+      <div class="topbar">
+        <div class="brand">
+          <h1>Hermes - история размещений</h1>
+          <div class="sub">Откройте пост, либо скопируйте ссылку</div>
+        </div>
+        <div class="chips" id="chips"></div>
+      </div>
+      <div class="controls">
+        <div class="search">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <input id="q" placeholder="Поиск по названию или ссылке" autocomplete="off" />
+        </div>
+        <div class="pill" id="counter">0</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="section frame" id="showcase"></div>
+
+    <div class="section" style="margin-top:16px">
+      <div class="list" id="list"></div>
+      <div class="empty" id="empty" style="display:none">Ничего не найдено. Попробуйте другой запрос.</div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Скопировано</div>
+
+  <script>
+    const DATA = {"tg": [{"name": "@thevse", "url": "https://t.me/thevse/6545"}, {"name": "@crypt0inside", "url": "https://t.me/crypt0inside/1421"}, {"name": "@polunintrade", "url": "https://t.me/polunintrade/15549"}, {"name": "@traderanswers", "url": "https://t.me/traderanswers/1267"}, {"name": "@eeusd", "url": "https://t.me/eeusd/9299"}, {"name": "@ScalpersAlmshouse", "url": "https://t.me/ScalpersAlmshouse/4044"}, {"name": "@altmarate", "url": "https://t.me/altmarate/9284"}, {"name": "@polunintrade", "url": "https://t.me/polunintrade/16123"}, {"name": "@dashi_eshiev", "url": "https://t.me/dashi_eshiev/2409"}, {"name": "@marsellinvest", "url": "https://t.me/marsellinvest/7192"}, {"name": "@cryptobrelgin", "url": "https://t.me/cryptobrelgin/7196"}, {"name": "@cryptoBizLike", "url": "https://t.me/cryptoBizLike/1817"}, {"name": "@sin_cap_algo", "url": "https://t.me/sin_cap_algo/1595"}, {"name": "@Ten_gwei", "url": "https://t.me/Ten_gwei/689"}, {"name": "@Gaaapsby", "url": "https://t.me/Gaaapsby/1146"}, {"name": "@IT_Capital", "url": "https://t.me/IT_Capital/2223"}, {"name": "@crypt0inside", "url": "https://t.me/crypt0inside/1943"}, {"name": "@gryazinbazar", "url": "https://t.me/gryazinbazar/1579"}, {"name": "@Crypto_Rank1", "url": "https://t.me/Crypto_Rank1/1357"}, {"name": "@firsovventure", "url": "https://t.me/firsovventure/3590"}, {"name": "@Gagarin_ICO", "url": "https://t.me/Gagarin_ICO/5013"}, {"name": "@craghackstavern", "url": "https://t.me/craghackstavern/2187"}, {"name": "@nefomoeb", "url": "https://t.me/nefomoeb/5287"}, {"name": "@awaiting_lifechange", "url": "https://t.me/awaiting_lifechange/473"}, {"name": "@deployladeploy", "url": "https://t.me/deployladeploy/1506"}, {"name": "@crypto_resident_notes", "url": "https://t.me/crypto_resident_notes/303"}, {"name": "@cryptowebz", "url": "https://t.me/cryptowebz/8824"}, {"name": "@artem_thecreator", "url": "https://t.me/artem_thecreator/2272"}, {"name": "@thevse", "url": "https://t.me/thevse/2082"}, {"name": "@craghack_crypto", "url": "https://t.me/craghack_crypto/480"}, {"name": "@coincase", "url": "https://t.me/coincase/2060"}, {"name": "@deployladeploy", "url": "https://t.me/deployladeploy/1541"}, {"name": "@gigatea", "url": "https://t.me/gigatea/309"}, {"name": "@bingx_ofical", "url": "https://t.me/bingx_ofical/4528"}, {"name": "@naastolovku", "url": "https://t.me/naastolovku/8272"}, {"name": "@firsovventure", "url": "https://t.me/firsovventure/3801"}, {"name": "@polunintrade", "url": "https://t.me/polunintrade/16247"}, {"name": "@marsellinvest", "url": "https://t.me/marsellinvest/7114"}, {"name": "@mendel_crypto", "url": "https://t.me/mendel_crypto/985"}, {"name": "@worldwideshemi", "url": "https://t.me/worldwideshemi/1258"}, {"name": "@CryptoRus_25", "url": "https://t.me/CryptoRus_25/805"}, {"name": "@eeusd", "url": "https://t.me/eeusd/9531"}, {"name": "@suiciderrrrr", "url": "https://t.me/suiciderrrrr/1273"}, {"name": "@ArtOfResearchChannel", "url": "https://t.me/ArtOfResearchChannel/599"}, {"name": "@craghackstavern", "url": "https://t.me/craghackstavern/1337"}, {"name": "@CryptoVedma", "url": "https://t.me/CryptoVedma/4257"}, {"name": "@marsellinvest", "url": "https://t.me/marsellinvest/7223"}, {"name": "@gryazinbazar", "url": "https://t.me/gryazinbazar/1559"}, {"name": "@mendel_crypto", "url": "https://t.me/mendel_crypto/1004"}, {"name": "@bitcoin21ideas", "url": "https://t.me/bitcoin21ideas/3593"}, {"name": "Timur_Makhmutoff", "url": "https://t.me/Timur_Makhmutoff/s/280"}, {"name": "@cryptonftded", "url": "https://t.me/cryptonftded/1683"}, {"name": "@TD_in_crypto", "url": "https://t.me/TD_in_crypto/2378"}, {"name": "@ThorchainRus", "url": "https://t.me/ThorchainRus/6016"}, {"name": "@Gaaapsby", "url": "https://t.me/Gaaapsby/749"}, {"name": "@Gagarin_talk", "url": "https://t.me/Gagarin_talk/1317919"}, {"name": "@SaversCrypto", "url": "https://t.me/SaversCrypto/2691"}, {"name": "@Julia_Zakharchuk", "url": "https://t.me/Julia_Zakharchuk/42"}, {"name": "@zapiski_divergenta", "url": "https://t.me/zapiski_divergenta/136"}, {"name": "@CryptoPsy_Chanel", "url": "https://t.me/CryptoPsy_Chanel/1098"}, {"name": "@coincase", "url": "https://t.me/coincase/1622"}, {"name": "@Crypto_Rank1", "url": "https://t.me/Crypto_Rank1/1266"}, {"name": "@tearsofaimin", "url": "https://t.me/tearsofaimin/494"}, {"name": "@cryptotesemnikov", "url": "https://t.me/cryptotesemnikov/1039"}, {"name": "@craghack_chat", "url": "https://t.me/craghack_chat/184153"}, {"name": "@awaiting_lifechange", "url": "https://t.me/awaiting_lifechange/378"}, {"name": "@alansi_venture", "url": "https://t.me/alansi_venture/1035"}, {"name": "@defi_eth2", "url": "https://t.me/defi_eth2/1009"}, {"name": "@soldidi", "url": "https://t.me/soldidi/1732"}, {"name": "@ZEFIRIUM_CRYPTO", "url": "https://t.me/ZEFIRIUM_CRYPTO/2386"}, {"name": "@officer_cia", "url": "https://t.me/officer_cia/2994"}, {"name": "@Bitcoin_Cafe", "url": "https://t.me/Bitcoin_Cafe/911"}, {"name": "@Forward_invest", "url": "https://t.me/Forward_invest/932"}, {"name": "@TON_crypto_talks", "url": "https://t.me/TON_crypto_talks/6188"}, {"name": "@crypto_girba", "url": "https://t.me/crypto_girba/1841"}, {"name": "@Cat_Whale", "url": "https://t.me/Cat_Whale/6137"}, {"name": "@AnthillOfCocklomax", "url": "https://t.me/AnthillOfCocklomax/173"}, {"name": "@homakill", "url": "https://t.me/homakill/1542"}, {"name": "@CryptoPsy_Chat", "url": "https://t.me/CryptoPsy_Chat/34964"}, {"name": "@CRYPTORELAKS", "url": "https://t.me/CRYPTORELAKS/3720"}, {"name": "@nftoned_chat", "url": "https://t.me/nftoned_chat/27646"}, {"name": "@MyKlondike", "url": "https://t.me/MyKlondike/1317"}, {"name": "@blockchain_spirit", "url": "https://t.me/blockchain_spirit/965"}, {"name": "@ciscrypted", "url": "https://t.me/ciscrypted/585"}, {"name": "@cryptogovno", "url": "https://t.me/cryptogovno/2054"}, {"name": "@GO1DENCROSS", "url": "https://t.me/GO1DENCROSS/1882"}, {"name": "@theairclaim", "url": "https://t.me/theairclaim/1161"}, {"name": "@synagoygue", "url": "https://t.me/synagoygue/1888"}, {"name": "@waxdrop", "url": "https://t.me/waxdrop/3576"}, {"name": "@r1isaev", "url": "https://t.me/r1isaev/370"}, {"name": "@DagFlip", "url": "https://t.me/DagFlip/3337"}, {"name": "@speculator_1337", "url": "https://t.me/speculator_1337/2082"}, {"name": "@MayCryptonomicsReviews", "url": "https://t.me/MayCryptonomicsReviews/9353"}, {"name": "@anytimeanywhereconcierge", "url": "https://t.me/anytimeanywhereconcierge/24290"}, {"name": "@Lmeowcity", "url": "https://t.me/Lmeowcity/1842"}, {"name": "@coincase", "url": "https://t.me/coincase/1892"}, {"name": "@anti_fomo_trading", "url": "https://t.me/anti_fomo_trading/1353"}, {"name": "@utkacrp", "url": "https://t.me/utkacrp/964"}, {"name": "@yumify", "url": "https://t.me/yumify/473"}, {"name": "@Sayteamwork", "url": "https://t.me/Sayteamwork/6338"}, {"name": "@kira_bamboo", "url": "https://t.me/kira_bamboo/16"}, {"name": "@eternonotes", "url": "https://t.me/eternonotes/554"}, {"name": "@crypestor", "url": "https://t.me/crypestor/748"}, {"name": "@blockchain_spirit", "url": "https://t.me/blockchain_spirit/1013"}, {"name": "@CryptoGamingPool_News", "url": "https://t.me/CryptoGamingPool_News/4999"}, {"name": "@techcatalyst_vc", "url": "https://t.me/techcatalyst_vc/331"}, {"name": "@ArtOfResearchChannel", "url": "https://t.me/ArtOfResearchChannel/600"}, {"name": "@ArtOfResearchChannel", "url": "https://t.me/ArtOfResearchChannel/601"}, {"name": "@craghackstavern", "url": "https://t.me/craghackstavern/1377"}, {"name": "@craghackstavern", "url": "https://t.me/craghackstavern/1378"}, {"name": "@craghack_crypto", "url": "https://t.me/craghack_crypto/365"}, {"name": "@craghack_chat", "url": "https://t.me/craghack_chat/194495"}, {"name": "@ThecryptoinvestorTitovEgor", "url": "https://t.me/ThecryptoinvestorTitovEgor/75"}, {"name": "@chewacryptology", "url": "https://t.me/chewacryptology/1313"}, {"name": "@DensCoin", "url": "https://t.me/DensCoin/5786"}, {"name": "@cryptodays", "url": "https://t.me/cryptodays/7068"}, {"name": "@zerobtcblog", "url": "https://t.me/zerobtcblog/2015"}, {"name": "@zerobtcblog", "url": "https://t.me/zerobtcblog/2014"}, {"name": "@klyrosalpha", "url": "https://t.me/klyrosalpha/554"}, {"name": "@artemotiochain", "url": "https://t.me/artemotiochain/2236"}, {"name": "@Gagarin_ICO", "url": "https://t.me/Gagarin_ICO/4875"}, {"name": "@MyKlondike", "url": "https://t.me/MyKlondike/1349"}, {"name": "@cartelcooks", "url": "https://t.me/cartelcooks/43"}, {"name": "@cryptoroflston", "url": "https://t.me/cryptoroflston/1517"}, {"name": "@BapenostInvest", "url": "https://t.me/BapenostInvest/2159"}, {"name": "@Gaaapsby", "url": "https://t.me/Gaaapsby/990"}, {"name": "@Gaaapsby", "url": "https://t.me/Gaaapsby/982"}, {"name": "@Gaaapsby", "url": "https://t.me/Gaaapsby/976"}, {"name": "@Gaaapsby", "url": "https://t.me/Gaaapsby/873"}, {"name": "@Gaaapsby", "url": "https://t.me/Gaaapsby/862"}, {"name": "@crypestor", "url": "https://t.me/crypestor/775"}, {"name": "@craghackstavern", "url": "https://t.me/craghackstavern/1436"}, {"name": "@cryptobrelgin", "url": "https://t.me/cryptobrelgin/7136"}, {"name": "@SaversCrypto", "url": "https://t.me/SaversCrypto/2898"}, {"name": "@keep_calm_official", "url": "https://t.me/keep_calm_official/2806"}, {"name": "@cryptobrelgin", "url": "https://t.me/cryptobrelgin/7178"}, {"name": "@cryptobrelgin", "url": "https://t.me/cryptobrelgin/7135"}, {"name": "@baldmikalai", "url": "https://t.me/baldmikalai/1145"}, {"name": "@eternonotes", "url": "https://t.me/eternonotes/629"}, {"name": "@eternonotes", "url": "https://t.me/eternonotes/632"}, {"name": "@cryptodays", "url": "https://t.me/cryptodays/7453"}, {"name": "@kinomakera", "url": "https://t.me/kinomakera/1678"}, {"name": "@lion_crypto_blog", "url": "https://t.me/lion_crypto_blog/3562"}, {"name": "@lion_crypto_blog", "url": "https://t.me/lion_crypto_blog/3564"}, {"name": "@IronsTVIP", "url": "https://t.me/IronsTVIP/359"}, {"name": "@geekstonmedia", "url": "https://t.me/geekstonmedia/2480"}, {"name": "@nefomoeb", "url": "https://t.me/nefomoeb/6174"}, {"name": "@beloglazovpro", "url": "https://t.me/beloglazovpro/1555"}, {"name": "@sol_engy", "url": "https://t.me/sol_engy/424"}, {"name": "@traderanswers", "url": "https://t.me/traderanswers/1546"}, {"name": "@noderschatru", "url": "https://t.me/noderschatru/31508"}, {"name": "@Gagarin_ICO", "url": "https://t.me/Gagarin_ICO/4908"}, {"name": "@craghack_crypto", "url": "https://t.me/craghack_crypto/395"}, {"name": "@Ten_gwei", "url": "https://t.me/Ten_gwei/584"}, {"name": "@blockchain_spirit", "url": "https://t.me/blockchain_spirit/1021"}, {"name": "@cryptodays", "url": "https://t.me/cryptodays/7602"}, {"name": "@cryptobrelgin", "url": "https://t.me/cryptobrelgin/7272"}, {"name": "@DensCoin", "url": "https://t.me/DensCoin/5816"}, {"name": "@chewacryptology", "url": "https://t.me/chewacryptology/1363"}, {"name": "@jewlyyn", "url": "https://t.me/jewlyyn/1985"}, {"name": "@cryptodays", "url": "https://t.me/cryptodays/7730"}, {"name": "@Ten_gwei", "url": "https://t.me/Ten_gwei/597"}, {"name": "@cryptodays", "url": "https://t.me/cryptodays/7752"}, {"name": "@crlaze", "url": "https://t.me/crlaze/801"}, {"name": "@Gagarin_ICO", "url": "https://t.me/Gagarin_ICO/4923"}, {"name": "@tomoftrade", "url": "https://t.me/tomoftrade/1592"}, {"name": "@PopcornCapitals", "url": "https://t.me/PopcornCapitals/57"}, {"name": "@eternonotes", "url": "https://t.me/eternonotes/706"}, {"name": "@SaversCrypto", "url": "https://t.me/SaversCrypto/2917"}, {"name": "@cryptowebz", "url": "https://t.me/cryptowebz/9641"}, {"name": "@tondvij", "url": "https://t.me/tondvij/7955"}, {"name": "@tearsofaimin", "url": "https://t.me/tearsofaimin/588"}, {"name": "@synagoygue", "url": "https://t.me/synagoygue/1990"}, {"name": "@chewacryptology", "url": "https://t.me/chewacryptology/1386"}, {"name": "@thevse", "url": "https://t.me/thevse/5857"}, {"name": "@traderanswers", "url": "https://t.me/traderanswers/1560"}, {"name": "@omg_vibe", "url": "https://t.me/omg_vibe/356"}, {"name": "@myKlonDike", "url": "https://t.me/myKlonDike/1381"}, {"name": "@TD_in_crypto", "url": "https://t.me/TD_in_crypto/2709"}, {"name": "@chat_td_in_crypto", "url": "https://t.me/chat_td_in_crypto/97725"}, {"name": "@cryptobrelgin", "url": "https://t.me/cryptobrelgin/7498"}, {"name": "@eternonotes", "url": "https://t.me/eternonotes/731"}, {"name": "@Lmeowcity", "url": "https://t.me/Lmeowcity/2271"}, {"name": "@cryptobrelgin", "url": "https://t.me/cryptobrelgin/7503"}, {"name": "@ArtOfResearchChannel", "url": "https://t.me/ArtOfResearchChannel/652"}, {"name": "@crypto_man_tg", "url": "https://t.me/crypto_man_tg/825"}, {"name": "@Gagarin_ICO", "url": "https://t.me/Gagarin_ICO/4937"}, {"name": "@TDmitryT", "url": "https://t.me/TDmitryT/3279"}, {"name": "@bondarenkoLife", "url": "https://t.me/bondarenkoLife/2703"}, {"name": "@scalpingXanXanbl4", "url": "https://t.me/scalpingXanXanbl4/1403"}, {"name": "@officer_cia", "url": "https://t.me/officer_cia/3295"}, {"name": "@craghack_crypto", "url": "https://t.me/craghack_crypto/422"}, {"name": "@cryptobrelgin", "url": "https://t.me/cryptobrelgin/7590"}, {"name": "@nefomoeb", "url": "https://t.me/nefomoeb/6388"}, {"name": "@thecryptoartem", "url": "https://t.me/thecryptoartem/6192"}, {"name": "@zerobtcblog", "url": "https://t.me/zerobtcblog/2194"}, {"name": "@scalpingXanXanbl4", "url": "https://t.me/scalpingXanXanbl4/1404"}, {"name": "@kinomakera", "url": "https://t.me/kinomakera/1692"}, {"name": "@cryptodays", "url": "https://t.me/cryptodays/8412"}, {"name": "@CRYPTORELAKS", "url": "https://t.me/CRYPTORELAKS/4553"}, {"name": "@geekstonmedia", "url": "https://t.me/geekstonmedia/2491"}, {"name": "@waxdrop", "url": "https://t.me/waxdrop/3796"}, {"name": "@gryazinbazar", "url": "https://t.me/gryazinbazar/1400"}, {"name": "@orderincryptochaos", "url": "https://t.me/orderincryptochaos/1080"}, {"name": "@rqmun", "url": "https://t.me/rqmun/848"}, {"name": "@cheprinter", "url": "https://t.me/cheprinter/36"}, {"name": "@ZEFIRIUM_CRYPTO", "url": "https://t.me/ZEFIRIUM_CRYPTO/3204"}, {"name": "@craghack_crypto", "url": "https://t.me/craghack_crypto/434"}, {"name": "@theairclaim", "url": "https://t.me/theairclaim/1269"}, {"name": "@cryptobrelgin", "url": "https://t.me/cryptobrelgin/7648"}, {"name": "@Ten_gwei", "url": "https://t.me/Ten_gwei/660"}, {"name": "@bondarenkoLife", "url": "https://t.me/bondarenkoLife/2752"}, {"name": "@cryptotesemnikov", "url": "https://t.me/cryptotesemnikov/1324"}, {"name": "@coincase", "url": "https://t.me/coincase/2010"}, {"name": "@cryptotesemnikov", "url": "https://t.me/cryptotesemnikov/1325"}, {"name": "@sqwizeeETH", "url": "https://t.me/sqwizeeETH/420"}, {"name": "@Damiroff_K", "url": "https://t.me/Damiroff_K/831"}, {"name": "@orderincryptochaos", "url": "https://t.me/orderincryptochaos/1088"}, {"name": "@MaxDY0R", "url": "https://t.me/MaxDY0R/563"}, {"name": "@Gagarin_ICO", "url": "https://t.me/Gagarin_ICO/4952"}, {"name": "@firsovventure", "url": "https://t.me/firsovventure/3441"}, {"name": "@thevse", "url": "https://t.me/thevse/6264"}, {"name": "@truecryptok", "url": "https://t.me/truecryptok/10988"}, {"name": "@gryazinbazar", "url": "https://t.me/gryazinbazar/1409"}, {"name": "@firsovventure", "url": "https://t.me/firsovventure/3463"}, {"name": "@ExchangeSpeculator", "url": "https://t.me/ExchangeSpeculator/604"}, {"name": "@cryptobrelgin", "url": "https://t.me/cryptobrelgin/7727"}, {"name": "@deployladeploy", "url": "https://t.me/deployladeploy/1468"}, {"name": "@craghackstavern", "url": "https://t.me/craghackstavern/1867"}, {"name": "@thecryptoartem", "url": "https://t.me/thecryptoartem/6272"}, {"name": "@cryptodays", "url": "https://t.me/cryptodays/8881"}, {"name": "@chewacryptology", "url": "https://t.me/chewacryptology/1467"}, {"name": "@Gagarin_ICO", "url": "https://t.me/Gagarin_ICO/4966"}, {"name": "@BapenostInvest", "url": "https://t.me/BapenostInvest/2339"}, {"name": "@cryptobrelgin", "url": "https://t.me/cryptobrelgin/7757"}, {"name": "@ZEFIRIUM_CRYPTO", "url": "https://t.me/ZEFIRIUM_CRYPTO/3251"}, {"name": "@theairclaim", "url": "https://t.me/theairclaim/1273"}, {"name": "@WingsNodeTeam", "url": "https://t.me/WingsNodeTeam/1884"}, {"name": "@firsovventure", "url": "https://t.me/firsovventure/3473"}, {"name": "@craghack_crypto", "url": "https://t.me/craghack_crypto/444"}, {"name": "@artem_thecreator", "url": "https://t.me/artem_thecreator/2337"}, {"name": "@cryptonftded", "url": "https://t.me/cryptonftded/2485"}, {"name": "@crypt0inside", "url": "https://t.me/crypt0inside/1994"}, {"name": "@gryazinbazar", "url": "https://t.me/gryazinbazar/1425"}, {"name": "@profit0r", "url": "https://t.me/profit0r/1388"}, {"name": "@lion_crypto_blog", "url": "https://t.me/lion_crypto_blog/3702"}, {"name": "@mendel_crypto", "url": "https://t.me/mendel_crypto/909"}, {"name": "@Crypto_MVP2025", "url": "https://t.me/Crypto_MVP2025/2293"}, {"name": "@tondvij", "url": "https://t.me/tondvij/8115"}, {"name": "@dnevnik_boevik", "url": "https://t.me/dnevnik_boevik/1157"}, {"name": "@coincase", "url": "https://t.me/coincase/2029"}, {"name": "@cryptomokakke", "url": "https://t.me/cryptomokakke/872"}, {"name": "@cryptomokakke", "url": "https://t.me/cryptomokakke/873"}, {"name": "@profit0r", "url": "https://t.me/profit0r/1397"}, {"name": "@DensCoin", "url": "https://t.me/DensCoin/5845"}, {"name": "@anti_fomo_trading", "url": "https://t.me/anti_fomo_trading/1608"}, {"name": "@Gagarin_ICO", "url": "https://t.me/Gagarin_ICO/4978"}, {"name": "@deployladeploy", "url": "https://t.me/deployladeploy/1487"}, {"name": "@SolTimer", "url": "https://t.me/SolTimer/952"}, {"name": "@vaqucrypto", "url": "https://t.me/vaqucrypto/349"}, {"name": "@gryazinbazar", "url": "https://t.me/gryazinbazar/1445"}, {"name": "@Turing_consensus", "url": "https://t.me/Turing_consensus/892"}, {"name": "@deployladeploy", "url": "https://t.me/deployladeploy/1491"}, {"name": "@mendel_crypto", "url": "https://t.me/mendel_crypto/937"}, {"name": "@Lmeowcity", "url": "https://t.me/Lmeowcity/2433"}, {"name": "@nikitrade_gang", "url": "https://t.me/nikitrade_gang/6294"}, {"name": "@cryptoBizLike", "url": "https://t.me/cryptoBizLike/1830"}, {"name": "@crypestor", "url": "https://t.me/crypestor/806"}, {"name": "@r1isaev", "url": "https://t.me/r1isaev/516"}, {"name": "@OlegInvest", "url": "https://t.me/OlegInvest/6732"}, {"name": "@OlegInvest", "url": "https://t.me/OlegInvest/6733"}, {"name": "@OlegInvest", "url": "https://t.me/OlegInvest/6734"}, {"name": "@truecryptok", "url": "https://t.me/truecryptok/11300"}, {"name": "@omg_vibe", "url": "https://t.me/omg_vibe/550"}, {"name": "@Forward_invest", "url": "https://t.me/Forward_invest/945"}, {"name": "@cryptobrelgin", "url": "https://t.me/cryptobrelgin/7873"}, {"name": "@cheprinter", "url": "https://t.me/cheprinter/46"}, {"name": "@gryazinbazar", "url": "https://t.me/gryazinbazar/1468"}, {"name": "@dnevnik_boevik", "url": "https://t.me/dnevnik_boevik/1191"}, {"name": "@Crypto_CheG1", "url": "https://t.me/Crypto_CheG1/10910"}, {"name": "@magicoctopuss", "url": "https://t.me/magicoctopuss/4142"}, {"name": "@DagFlip", "url": "https://t.me/DagFlip/3749"}, {"name": "@DagFlip", "url": "https://t.me/DagFlip/3750"}, {"name": "@jewlyyn", "url": "https://t.me/jewlyyn/2033"}, {"name": "@coincase", "url": "https://t.me/coincase/2043"}, {"name": "@sol_engy", "url": "https://t.me/sol_engy/744"}, {"name": "@craghack_crypto", "url": "https://t.me/craghack_crypto/459"}, {"name": "@omg_vibe", "url": "https://t.me/omg_vibe/586"}, {"name": "@mendel_crypto", "url": "https://t.me/mendel_crypto/961"}, {"name": "@Gagarin_ICO", "url": "https://t.me/Gagarin_ICO/4991"}, {"name": "@cryptoBizLike", "url": "https://t.me/cryptoBizLike/1841"}, {"name": "@keep_calm_official", "url": "https://t.me/keep_calm_official/2859"}, {"name": "@nefomoeb", "url": "https://t.me/nefomoeb/6674"}, {"name": "@coincase", "url": "https://t.me/coincase/2047"}, {"name": "@bingx_ofical", "url": "https://t.me/bingx_ofical/4314"}, {"name": "@artem_thecreator", "url": "https://t.me/artem_thecreator/2351"}, {"name": "@gryazinbazar", "url": "https://t.me/gryazinbazar/1493"}, {"name": "@firsovventure", "url": "https://t.me/firsovventure/3561"}, {"name": "@deployladeploy", "url": "https://t.me/deployladeploy/1502"}, {"name": "@mendel_crypto", "url": "https://t.me/mendel_crypto/966"}, {"name": "@SolTimer", "url": "https://t.me/SolTimer/966"}, {"name": "@kdludit", "url": "https://t.me/kdludit/756"}, {"name": "@bingx_ofical", "url": "https://t.me/bingx_ofical/4315"}, {"name": "@gigatea", "url": "https://t.me/gigatea/277"}, {"name": "@profit0r", "url": "https://t.me/profit0r/1419"}, {"name": "@scalpingXanXanbl4", "url": "https://t.me/scalpingXanXanbl4/1421"}, {"name": "@polunintrade", "url": "https://t.me/polunintrade/15550"}, {"name": "@VICRYPTOS", "url": "https://t.me/VICRYPTOS/4289"}, {"name": "@hadesboy_eth", "url": "https://t.me/hadesboy_eth/1444"}, {"name": "@profit0r", "url": "https://t.me/profit0r/1424"}, {"name": "@firsovventure", "url": "https://t.me/firsovventure/3579"}, {"name": "@runonflux_ru", "url": "https://t.me/runonflux_ru/1/151095"}, {"name": "@gryazinbazar", "url": "https://t.me/gryazinbazar/1516"}, {"name": "@eeusd", "url": "https://t.me/eeusd/9297"}, {"name": "@crypto_gst", "url": "https://t.me/crypto_gst/5708"}, {"name": "@crypto_gst", "url": "https://t.me/crypto_gst/5710"}, {"name": "@PopcornCapitals", "url": "https://t.me/PopcornCapitals/81"}, {"name": "@PopcornCapitals", "url": "https://t.me/PopcornCapitals/83"}, {"name": "@theairclaim", "url": "https://t.me/theairclaim/1280"}, {"name": "@kinomakera", "url": "https://t.me/kinomakera/1707"}, {"name": "@nefomoeb", "url": "https://t.me/nefomoeb/6720"}, {"name": "@omg_vibe", "url": "https://t.me/omg_vibe/612"}, {"name": "@ZEFIRIUM_CRYPTO", "url": "https://t.me/ZEFIRIUM_CRYPTO/3359"}, {"name": "@truecrypto", "url": "https://t.me/truecrypto/11483"}, {"name": "@deployladeploy", "url": "https://t.me/deployladeploy/1523"}, {"name": "@Crypto_CheG1", "url": "https://t.me/Crypto_CheG1/11112"}, {"name": "@thevse", "url": "https://t.me/thevse/6400"}, {"name": "@thevse", "url": "https://t.me/thevse/6420"}, {"name": "@thevse", "url": "https://t.me/thevse/6421"}, {"name": "@thevse", "url": "https://t.me/thevse/6425"}, {"name": "@thevse", "url": "https://t.me/thevse/6429"}, {"name": "@thevse", "url": "https://t.me/thevse/6432"}, {"name": "@FutureChainNews", "url": "https://t.me/FutureChainNews/310"}, {"name": "@jamesrichcrypto", "url": "https://t.me/jamesrichcrypto/8208"}, {"name": "@polunintrade", "url": "https://t.me/polunintrade/15621"}, {"name": "@omg_vibe", "url": "https://t.me/omg_vibe/630"}, {"name": "@DensCoin", "url": "https://t.me/DensCoin/5852"}, {"name": "@sin_cap_algo", "url": "https://t.me/sin_cap_algo/1849"}, {"name": "@kremlevS", "url": "https://t.me/kremlevS/2479"}, {"name": "@runonflux_ru", "url": "https://t.me/runonflux_ru/1/151708"}, {"name": "@nefomoeb", "url": "https://t.me/nefomoeb/6733"}, {"name": "@tomoftrade", "url": "https://t.me/tomoftrade/1963"}, {"name": "@bafet", "url": "https://t.me/bafet/3728"}, {"name": "@WingsNodeTeam", "url": "https://t.me/WingsNodeTeam/1907"}, {"name": "@FutureChainNews", "url": "https://t.me/FutureChainNews/325"}, {"name": "@cryptart", "url": "https://t.me/cryptart/1077"}, {"name": "@marsellinvest", "url": "https://t.me/marsellinvest/7115"}, {"name": "@marsellinvest", "url": "https://t.me/marsellinvest/7122"}, {"name": "@rqmun", "url": "https://t.me/rqmun/860"}, {"name": "@theairclaim", "url": "https://t.me/theairclaim/1282"}, {"name": "@artem_thecreator", "url": "https://t.me/artem_thecreator/2358"}, {"name": "@mendel_crypto", "url": "https://t.me/mendel_crypto/992"}, {"name": "@dnevnik_boevik", "url": "https://t.me/dnevnik_boevik/1232"}, {"name": "@cryptomokakke", "url": "https://t.me/cryptomokakke/889"}, {"name": "@thevse", "url": "https://t.me/thevse/6448"}, {"name": "@marsellinvest", "url": "https://t.me/marsellinvest/7128"}, {"name": "@ManinTG_blog", "url": "https://t.me/ManinTG_blog/664"}, {"name": "@criptobitochek", "url": "https://t.me/criptobitochek/959"}, {"name": "@criptobitochek", "url": "https://t.me/criptobitochek/957"}, {"name": "@criptobitochek", "url": "https://t.me/criptobitochek/958"}, {"name": "@polunintrade", "url": "https://t.me/polunintrade/15753"}, {"name": "@profit0r", "url": "https://t.me/profit0r/1439"}, {"name": "@nikitrade_gang", "url": "https://t.me/nikitrade_gang/6465"}, {"name": "@FutureChainNews", "url": "https://t.me/FutureChainNews/345"}, {"name": "@vladkapitals", "url": "https://t.me/vladkapitals/2830"}, {"name": "@Gagarin_ICO", "url": "https://t.me/Gagarin_ICO/5035"}, {"name": "@obmen24", "url": "https://t.me/obmen24/22512"}, {"name": "@OI_Delta", "url": "https://t.me/OI_Delta/7640"}, {"name": "@craghack_crypto", "url": "https://t.me/craghack_crypto/470"}, {"name": "@bingx_ofical", "url": "https://t.me/bingx_ofical/4373"}, {"name": "@pechatniystanok", "url": "https://t.me/pechatniystanok/2970"}, {"name": "@cryptoprosto7", "url": "https://t.me/cryptoprosto7/2216"}, {"name": "@omg_vibe", "url": "https://t.me/omg_vibe/672"}, {"name": "@CRYPTORELAKS", "url": "https://t.me/CRYPTORELAKS/4875"}, {"name": "@cryptotesemnikov", "url": "https://t.me/cryptotesemnikov/1437"}, {"name": "@cryptonftded", "url": "https://t.me/cryptonftded/2644"}, {"name": "@crypto_cheg1", "url": "https://t.me/crypto_cheg1/11214"}, {"name": "@runonflux_ru", "url": "https://t.me/runonflux_ru/1/152728"}, {"name": "@thevse", "url": "https://t.me/thevse/6471"}, {"name": "@jamesrichcrypto", "url": "https://t.me/jamesrichcrypto/8224"}, {"name": "@whale_denis", "url": "https://t.me/whale_denis/2447"}, {"name": "@whale_denis", "url": "https://t.me/whale_denis/2448"}, {"name": "@utkacrp", "url": "https://t.me/utkacrp/1201"}, {"name": "@AlexeyInvestiruet", "url": "https://t.me/AlexeyInvestiruet/3855"}, {"name": "@CGPDrops", "url": "https://t.me/CGPDrops/57307"}, {"name": "@bondarenkoLife", "url": "https://t.me/bondarenkoLife/2843"}, {"name": "@speculator_1337", "url": "https://t.me/speculator_1337/2318"}, {"name": "@marsellinvest", "url": "https://t.me/marsellinvest/7171"}, {"name": "@polunintrade", "url": "https://t.me/polunintrade/15911"}, {"name": "@ArtOfResearchChannel", "url": "https://t.me/ArtOfResearchChannel/726"}, {"name": "@ArtOfResearchChannel", "url": "https://t.me/ArtOfResearchChannel/727"}, {"name": "@Dr_Trada", "url": "https://t.me/Dr_Trada/1739"}, {"name": "@ManinTG_blog", "url": "https://t.me/ManinTG_blog/674"}, {"name": "@nymeroynosalpha", "url": "https://t.me/nymeroynosalpha/1282"}, {"name": "@whale_denis", "url": "https://t.me/whale_denis/2465"}, {"name": "@DensCoin", "url": "https://t.me/DensCoin/5857"}, {"name": "@crypteeka", "url": "https://t.me/crypteeka/1184"}, {"name": "@mopsikisolana", "url": "https://t.me/mopsikisolana/367"}, {"name": "@vladkapitals", "url": "https://t.me/vladkapitals/2795"}, {"name": "@cryptoscanner_chat", "url": "https://t.me/cryptoscanner_chat/253754"}, {"name": "@RTMscalp", "url": "https://t.me/RTMscalp/427"}, {"name": "@RTMscalp", "url": "https://t.me/RTMscalp/428"}, {"name": "@vaqucrypto", "url": "https://t.me/vaqucrypto/432"}, {"name": "@zerobtcblog", "url": "https://t.me/zerobtcblog/2291"}, {"name": "@theairclaim", "url": "https://t.me/theairclaim/1286"}, {"name": "@bingx_ofical", "url": "https://t.me/bingx_ofical/4421"}, {"name": "@cheprinter", "url": "https://t.me/cheprinter/59"}, {"name": "@deployladeploy", "url": "https://t.me/deployladeploy/1550"}, {"name": "@OlegInvest", "url": "https://t.me/OlegInvest/6776"}, {"name": "@OlegInvest", "url": "https://t.me/OlegInvest/6777"}, {"name": "@OlegInvest", "url": "https://t.me/OlegInvest/6775"}, {"name": "@crypto_cheg1", "url": "https://t.me/crypto_cheg1/11376"}, {"name": "@bafet", "url": "https://t.me/bafet/5140"}, {"name": "@thevse", "url": "https://t.me/thevse/6495"}, {"name": "@CCTRDE", "url": "https://t.me/CCTRDE/1271"}, {"name": "@signali", "url": "https://t.me/signali/9441"}, {"name": "@tondvij", "url": "https://t.me/tondvij/8409"}, {"name": "@omg_vibe", "url": "https://t.me/omg_vibe/721"}, {"name": "@WingsNodeTeam", "url": "https://t.me/WingsNodeTeam/1924"}, {"name": "@Lmeowcity", "url": "https://t.me/Lmeowcity/2473"}, {"name": "@Crypto_MVP2025", "url": "https://t.me/Crypto_MVP2025/2385"}, {"name": "@profit0r", "url": "https://t.me/profit0r/1449"}, {"name": "@firsovventure", "url": "https://t.me/firsovventure/3715"}, {"name": "@SZCRYPTO888", "url": "https://t.me/SZCRYPTO888/1402"}, {"name": "@nefomoeb", "url": "https://t.me/nefomoeb/6843"}, {"name": "@polunintrade", "url": "https://t.me/polunintrade/16021"}, {"name": "@criptobitochek", "url": "https://t.me/criptobitochek/996"}, {"name": "@myKlonDike", "url": "https://t.me/myKlonDike/1425"}, {"name": "@ThorchainRus", "url": "https://t.me/ThorchainRus/9693"}, {"name": "@runetradingru2", "url": "https://t.me/runetradingru2/43377"}, {"name": "@cryptodays", "url": "https://t.me/cryptodays/9953"}, {"name": "@eternonotes", "url": "https://t.me/eternonotes/963"}, {"name": "@Trader_Legion", "url": "https://t.me/Trader_Legion/63906"}, {"name": "@mendel_crypto", "url": "https://t.me/mendel_crypto/1024"}, {"name": "@cryptogangstermoney", "url": "https://t.me/cryptogangstermoney/57"}, {"name": "@artemotiochain", "url": "https://t.me/artemotiochain/2380"}, {"name": "@LVVfrom", "url": "https://t.me/LVVfrom/1535"}, {"name": "@SaversCrypto", "url": "https://t.me/SaversCrypto/2972"}, {"name": "@coincase", "url": "https://t.me/coincase/2077"}, {"name": "@theairclaim", "url": "https://t.me/theairclaim/1288"}, {"name": "@burminator", "url": "https://t.me/burminator/3282"}, {"name": "@profit0r", "url": "https://t.me/profit0r/1454"}, {"name": "@thecryptoartem", "url": "https://t.me/thecryptoartem/6543"}, {"name": "@ZEFIRIUM_CRYPTO", "url": "https://t.me/ZEFIRIUM_CRYPTO/3419"}, {"name": "@deployladeploy", "url": "https://t.me/deployladeploy/1579"}, {"name": "@dnevnik_boevik", "url": "https://t.me/dnevnik_boevik/1252"}, {"name": "@cryptomokakke", "url": "https://t.me/cryptomokakke/902"}, {"name": "@magicoctopuss", "url": "https://t.me/magicoctopuss/4178"}, {"name": "@obmen24", "url": "https://t.me/obmen24/22589"}, {"name": "@obmen24", "url": "https://t.me/obmen24/22580"}, {"name": "@thevse", "url": "https://t.me/thevse/6525"}, {"name": "@psclama", "url": "https://t.me/psclama/1342"}, {"name": "@nikitrade_gang", "url": "https://t.me/nikitrade_gang/6510"}, {"name": "@SSMAXS", "url": "https://t.me/SSMAXS/14713"}, {"name": "@polunintrade", "url": "https://t.me/polunintrade/16087"}, {"name": "@firsovventure", "url": "https://t.me/firsovventure/3749"}, {"name": "@crypto_cheg1", "url": "https://t.me/crypto_cheg1/11601"}, {"name": "@SolTimer", "url": "https://t.me/SolTimer/983"}, {"name": "@Turing_consensus", "url": "https://t.me/Turing_consensus/922"}, {"name": "@awaiting_lifechange", "url": "https://t.me/awaiting_lifechange/500"}, {"name": "@bingx_ofical", "url": "https://t.me/bingx_ofical/3519"}, {"name": "@yumify", "url": "https://t.me/yumify/752"}, {"name": "@DensCoin", "url": "https://t.me/DensCoin/5863"}, {"name": "@u7niversaldao", "url": "https://t.me/u7niversaldao/601"}, {"name": "@Ten_gwei", "url": "https://t.me/Ten_gwei/718"}, {"name": "@softl0ck", "url": "https://t.me/softl0ck/1210"}, {"name": "@truecrypto", "url": "https://t.me/truecrypto/11846"}, {"name": "@vaqucrypto", "url": "https://t.me/vaqucrypto/487"}, {"name": "@profit0r", "url": "https://t.me/profit0r/1466"}, {"name": "@profit0r", "url": "https://t.me/profit0r/1460"}, {"name": "@SZCRYPTO888", "url": "https://t.me/SZCRYPTO888/1436"}, {"name": "@lion_crypto_blog", "url": "https://t.me/lion_crypto_blog/3803"}, {"name": "@FutureChainNews", "url": "https://t.me/FutureChainNews/426"}, {"name": "@theairclaim", "url": "https://t.me/theairclaim/1291"}, {"name": "@omg_vibe", "url": "https://t.me/omg_vibe/748"}, {"name": "@CRYPTORELAKS", "url": "https://t.me/CRYPTORELAKS/4982"}, {"name": "@ZEFIRIUM_CRYPTO", "url": "https://t.me/ZEFIRIUM_CRYPTO/3437"}, {"name": "@sqwizeeETH", "url": "https://t.me/sqwizeeETH/442"}, {"name": "@crypto_cheg1", "url": "https://t.me/crypto_cheg1/11690"}, {"name": "@crypto_cheg1", "url": "https://t.me/crypto_cheg1/11675"}, {"name": "@crypto_cheg1", "url": "https://t.me/crypto_cheg1/11640"}, {"name": "@speculator_1337", "url": "https://t.me/speculator_1337/2387"}, {"name": "@crypto_cheg1", "url": "https://t.me/crypto_cheg1/11623"}, {"name": "@crypto_gst", "url": "https://t.me/crypto_gst/5966"}, {"name": "@criptobitochek", "url": "https://t.me/criptobitochek/1013"}, {"name": "@OI_Delta", "url": "https://t.me/OI_Delta/7736"}, {"name": "@vladkapitals", "url": "https://t.me/vladkapitals/2825"}, {"name": "@omg_vibe", "url": "https://t.me/omg_vibe/774"}, {"name": "@FutureChainNews", "url": "https://t.me/FutureChainNews/433"}, {"name": "@polunintrade", "url": "https://t.me/polunintrade/16148"}, {"name": "@SZCRYPTO888", "url": "https://t.me/SZCRYPTO888/1449"}, {"name": "@nefomoeb", "url": "https://t.me/nefomoeb/6918"}, {"name": "@thecryptoartem", "url": "https://t.me/thecryptoartem/6617"}, {"name": "@marsellinvest", "url": "https://t.me/marsellinvest/7247"}, {"name": "@nikitrade_gang", "url": "https://t.me/nikitrade_gang/6549"}, {"name": "@profit0r", "url": "https://t.me/profit0r/1476"}, {"name": "@cryptodays", "url": "https://t.me/cryptodays/10152"}, {"name": "@PopcornCapitals", "url": "https://t.me/PopcornCapitals/100"}, {"name": "@bafet", "url": "https://t.me/bafet/5290"}, {"name": "@b1gfamam", "url": "https://t.me/b1gfamam/293"}, {"name": "@OxMeur", "url": "https://t.me/OxMeur/1487"}, {"name": "@OI_Delta", "url": "https://t.me/OI_Delta/7796"}, {"name": "@cryptobrelgin", "url": "https://t.me/cryptobrelgin/8201"}, {"name": "@bondarenkoLife", "url": "https://t.me/bondarenkoLife/2866"}, {"name": "@cryptotesemnikov", "url": "https://t.me/cryptotesemnikov/1470"}, {"name": "@mendel_crypto", "url": "https://t.me/mendel_crypto/1060"}, {"name": "@thevse", "url": "https://t.me/thevse/6570"}, {"name": "@SZCRYPTO888", "url": "https://t.me/SZCRYPTO888/1451"}, {"name": "@criptobitochek", "url": "https://t.me/criptobitochek/1025"}, {"name": "@LVVfrom", "url": "https://t.me/LVVfrom/1542"}, {"name": "@omg_vibe", "url": "https://t.me/omg_vibe/793"}, {"name": "@RTMscalp", "url": "https://t.me/RTMscalp/474"}, {"name": "@atmtrading_academy", "url": "https://t.me/atmtrading_academy/10045"}, {"name": "@marsellinvest", "url": "https://t.me/marsellinvest/7274"}, {"name": "@FutureChainNews", "url": "https://t.me/FutureChainNews/464"}, {"name": "@cryptonftded", "url": "https://t.me/cryptonftded/2738"}, {"name": "@criptobitochek", "url": "https://t.me/criptobitochek/1029"}, {"name": "@craghack_crypto", "url": "https://t.me/craghack_crypto/490"}, {"name": "@soldidi", "url": "https://t.me/soldidi/1746"}, {"name": "@techcatalyst_vc", "url": "https://t.me/techcatalyst_vc/368"}, {"name": "@WingsNodeTeam", "url": "https://t.me/WingsNodeTeam/1939"}, {"name": "@gryazinbazar", "url": "https://t.me/gryazinbazar/1612"}, {"name": "@crypto_cheg1", "url": "https://t.me/crypto_cheg1/11820"}, {"name": "@CRYPTORELAKS", "url": "https://t.me/CRYPTORELAKS/5072"}, {"name": "@lizacallitgvalu", "url": "https://t.me/lizacallitgvalu/7462"}, {"name": "@geraltsol", "url": "https://t.me/geraltsol/5645"}, {"name": "@DensCoin", "url": "https://t.me/DensCoin/5869"}, {"name": "@eternonotes", "url": "https://t.me/eternonotes/1013"}, {"name": "@esheleverst", "url": "https://t.me/esheleverst/29"}, {"name": "@lizacallitgvalu", "url": "https://t.me/lizacallitgvalu/7473"}, {"name": "@lizacallit", "url": "https://t.me/lizacallit/8711"}], "social": [{"name": "1", "url": "https://discord.com/channels/1034274856201629726/1040051012045651988/1422572089067573338"}, {"name": "2", "url": "https://youtu.be/zaHQMexU67U?si=jiTJu__uXAi98NDE"}, {"name": "3", "url": "https://youtube.com/shorts/qa1AeV4zYfw?feature=share"}, {"name": "4", "url": "https://www.youtube.com/shorts/6V9VQWQqSxw"}, {"name": "5", "url": "https://youtu.be/P5J9IOBU2Y4"}, {"name": "6", "url": "https://axl.uporovdefi.pro/crisis"}, {"name": "7", "url": "https://youtube.com/shorts/XBFmV1gKzec"}, {"name": "8", "url": "https://youtube.com/shorts/OfOTDn3CIE0"}, {"name": "9", "url": "https://youtube.com/shorts/VXYfX3d2BBo?si=RGyFwzf-aHNo8cqu"}, {"name": "10", "url": "https://discord.com/channels/1034274856201629726/1040051012045651988/1433451872655638689"}, {"name": "11", "url": "https://youtu.be/r4sCDrGP1sE?si=8UXeB0ZJ6onPs9jZ"}, {"name": "12", "url": "https://youtu.be/-UHhTBekQFY?si=IqAozfrD7dAWYtTq"}, {"name": "13", "url": "https://youtu.be/zRmLCITqovo"}, {"name": "14", "url": "https://www.instagram.com/reel/DQrIbWqjIje/?igsh=MTc5c2hlbG40YzMxOQ=="}, {"name": "15", "url": "https://www.instagram.com/stories/olegbtc/3762313030521444497?utm_source=ig_story_item_share&igsh=cTFyczYxeTlyZG4x"}, {"name": "16", "url": "https://t.me/meme_coin_am/4896"}, {"name": "17", "url": "https://crypto-emergency.com/post/2735_gde-lyudi-chashe-vsego-teryayut-v-obmene-i-kak-etogo-izbezhat-privet-my-hermes-e.html"}, {"name": "18", "url": "https://criptovalyta.ru/servisy/hermes"}, {"name": "19", "url": "https://x.com/LizaFlux/status/1989230451039535405"}, {"name": "20", "url": "https://youtu.be/4OCEoRGoyMo"}, {"name": "21", "url": "https://x.com/investor_mem/status/1989327824025522179"}, {"name": "22", "url": "https://crypto-emergency.com/post/2804_p2p-died-vybirajte-nas-hermes-exchange-rabotaem-po-vsemu-miru-ohvatyvaem-ne-tolk.html"}, {"name": "23", "url": "https://crypto-emergency.com/post/2854_ishodya-iz-nashego-opyta-i-obsheniya-s-kollegami-iz-obmennogo-biznesa-imeetsya-n.html"}, {"name": "24", "url": "https://youtu.be/l_HScriBfD4"}, {"name": "25", "url": "https://youtube.com/live/5PPocHEg8J0"}, {"name": "26", "url": "https://youtu.be/sN55wuAZpLs"}, {"name": "27", "url": "https://teletype.in/@crypto_sfera/5rj6PfnFxcW"}, {"name": "28", "url": "https://crypto-emergency.com/post/2885_gde-bezopasno-obmenyat-kriptovalyutu-perehodi-na-nash-kanal-v-telegram-po-ssylke.html"}, {"name": "29", "url": "https://crypto-emergency.com/post/2899_ishodya-iz-nashego-opyta-i-obsheniya-s-kollegami-iz-obmennogo-biznesa-imeetsya-n.html"}, {"name": "30", "url": "https://youtu.be/hQKUbhAKkQs?si=jNO1P2T63sfnyfPM"}, {"name": "31", "url": "https://youtu.be/3ZyKNxelxhQ?si=Ld2tNpXb_yaHdf0X"}, {"name": "32", "url": "https://youtu.be/PWPikw3OpPA?si=ySWVULUNC6Yig3hg"}, {"name": "33", "url": "https://youtu.be/2ZdqGDLXs7M?si=AC5yfnC7IOz8q-fY"}, {"name": "34", "url": "https://discord.com/channels/1034274856201629726/1040051012045651988/1445782789332144231"}, {"name": "35", "url": "https://teletype.in/@crypto_sfera/wlwAIXHt7l7"}], "pod": [{"name": "THEVSE 1 (YouTube)", "url": "https://www.youtube.com/watch?si=K3Q1mdZOCc1VLdOL&v=QMxZd-NoSrQ&feature=youtu.be"}, {"name": "THEVSE x Hermes 2ч. (YouTube)", "url": "https://www.youtube.com/watch?v=BoZ5LKm_06U"}, {"name": "0xCragHack (с 22:47)", "url": "https://www.youtube.com/watch?v=GLKPfqJxEBQ"}]};
+    const TOP30 = [{"name": "@thevse", "url": "https://t.me/thevse/6545"}, {"name": "@crypt0inside", "url": "https://t.me/crypt0inside/1421"}, {"name": "@polunintrade", "url": "https://t.me/polunintrade/15549"}, {"name": "@traderanswers", "url": "https://t.me/traderanswers/1267"}, {"name": "@eeusd", "url": "https://t.me/eeusd/9299"}, {"name": "@ScalpersAlmshouse", "url": "https://t.me/ScalpersAlmshouse/4044"}, {"name": "@altmarate", "url": "https://t.me/altmarate/9284"}, {"name": "@polunintrade", "url": "https://t.me/polunintrade/16123"}, {"name": "@dashi_eshiev", "url": "https://t.me/dashi_eshiev/2409"}, {"name": "@marsellinvest", "url": "https://t.me/marsellinvest/7192"}, {"name": "@cryptobrelgin", "url": "https://t.me/cryptobrelgin/7196"}, {"name": "@cryptoBizLike", "url": "https://t.me/cryptoBizLike/1817"}, {"name": "@sin_cap_algo", "url": "https://t.me/sin_cap_algo/1595"}, {"name": "@Ten_gwei", "url": "https://t.me/Ten_gwei/689"}, {"name": "@Gaaapsby", "url": "https://t.me/Gaaapsby/1146"}, {"name": "@IT_Capital", "url": "https://t.me/IT_Capital/2223"}, {"name": "@crypt0inside", "url": "https://t.me/crypt0inside/1943"}, {"name": "@gryazinbazar", "url": "https://t.me/gryazinbazar/1579"}, {"name": "@Crypto_Rank1", "url": "https://t.me/Crypto_Rank1/1357"}, {"name": "@firsovventure", "url": "https://t.me/firsovventure/3590"}, {"name": "@Gagarin_ICO", "url": "https://t.me/Gagarin_ICO/5013"}, {"name": "@craghackstavern", "url": "https://t.me/craghackstavern/2187"}, {"name": "@nefomoeb", "url": "https://t.me/nefomoeb/5287"}, {"name": "@awaiting_lifechange", "url": "https://t.me/awaiting_lifechange/473"}, {"name": "@deployladeploy", "url": "https://t.me/deployladeploy/1506"}, {"name": "@crypto_resident_notes", "url": "https://t.me/crypto_resident_notes/303"}, {"name": "@cryptowebz", "url": "https://t.me/cryptowebz/8824"}, {"name": "@artem_thecreator", "url": "https://t.me/artem_thecreator/2272"}, {"name": "@thevse", "url": "https://t.me/thevse/2082"}, {"name": "@craghack_crypto", "url": "https://t.me/craghack_crypto/480"}];
+
+    const state = {
+      tab: 'tg',
+      q: ''
+    };
+
+    const chipsEl = document.getElementById('chips');
+    const listEl = document.getElementById('list');
+    const emptyEl = document.getElementById('empty');
+    const counterEl = document.getElementById('counter');
+    const showcaseEl = document.getElementById('showcase');
+    const qEl = document.getElementById('q');
+    const toastEl = document.getElementById('toast');
+    let toastTimer = null;
+
+    function showToast(text){
+      toastEl.textContent = text;
+      toastEl.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(()=> toastEl.classList.remove('show'), 1300);
+    }
+
+    function safeText(s){
+      return String(s ?? '');
+    }
+
+    function makeCard(item){
+      const url = safeText(item.url);
+      const name = safeText(item.name);
+      const el = document.createElement('div');
+      el.className = 'card';
+
+      const left = document.createElement('div');
+      left.className = 'left';
+      const n = document.createElement('div');
+      n.className = 'name';
+      n.textContent = name;
+      const u = document.createElement('div');
+      u.className = 'url';
+      u.textContent = url.replace(/^https?:\/\//,'');
+      left.appendChild(n);
+      left.appendChild(u);
+
+      const actions = document.createElement('div');
+      actions.className = 'actions';
+
+      const openBtn = document.createElement('a');
+      openBtn.className = 'btn primary';
+      openBtn.textContent = 'Открыть';
+      openBtn.href = url;
+      openBtn.target = '_blank';
+      openBtn.rel = 'noopener noreferrer';
+
+      const copyBtn = document.createElement('button');
+      copyBtn.className = 'btn outline';
+      copyBtn.type = 'button';
+      copyBtn.textContent = 'Скопировать';
+      copyBtn.addEventListener('click', async (e)=>{
+        e.preventDefault();
+        try{
+          await navigator.clipboard.writeText(url);
+          showToast('Скопировано');
+        }catch(err){
+          // fallback
+          const ta = document.createElement('textarea');
+          ta.value = url;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+          showToast('Скопировано');
+        }
+      });
+
+      actions.appendChild(openBtn);
+      actions.appendChild(copyBtn);
+
+      el.appendChild(left);
+      el.appendChild(actions);
+      return el;
+    }
+
+    function renderChips(){
+      const tabs = [
+        {k:'tg', label:'Telegram', count: DATA.tg.length},
+        {k:'social', label:'Соцсети', count: DATA.social.length},
+        {k:'pod', label:'Подкасты', count: DATA.pod.length}
+      ];
+      chipsEl.innerHTML='';
+      for (const t of tabs){
+        const c = document.createElement('div');
+        c.className = 'chip' + (state.tab===t.k ? ' active' : '');
+        c.innerHTML = `${t.label} <strong>${t.count}</strong>`;
+        c.addEventListener('click', ()=>{
+          state.tab = t.k;
+          renderChips();
+          render();
+        });
+        chipsEl.appendChild(c);
+      }
+    }
+
+    function filterItems(items){
+      const q = state.q.trim().toLowerCase();
+      if (!q) return items;
+      return items.filter(it => {
+        const n = safeText(it.name).toLowerCase();
+        const u = safeText(it.url).toLowerCase();
+        return n.includes(q) || u.includes(q);
+      });
+    }
+
+    function renderShowcase(){
+      // no title, just framed list of 30 TG items
+      showcaseEl.innerHTML='';
+      const list = document.createElement('div');
+      list.className='list';
+      for (const it of TOP30){
+        list.appendChild(makeCard(it));
+      }
+      showcaseEl.appendChild(list);
+    }
+
+    function render(){
+      const key = state.tab;
+      const all = DATA[key] || [];
+      const items = filterItems(all);
+      listEl.innerHTML='';
+      for (const it of items){
+        listEl.appendChild(makeCard(it));
+      }
+      emptyEl.style.display = items.length ? 'none' : 'block';
+      counterEl.textContent = `${items.length} из ${all.length}`;
+
+      // showcase visible only on tg tab and empty search
+      const show = (state.tab==='tg' && !state.q.trim());
+      showcaseEl.style.display = show ? 'block' : 'none';
+    }
+
+    qEl.addEventListener('input', (e)=>{
+      state.q = e.target.value || '';
+      render();
+    });
+
+    renderChips();
+    renderShowcase();
+    render();
+  </script>
+</body>
+</html>
